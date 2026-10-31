@@ -1,141 +1,171 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { teacherIdentity } from '../data/PortofolioData';
+import { teacherIdentity, documentInventory } from '../data/PortofolioData';
 
-export default function Home() {
+export default function Profile({ setPreviewDoc }) {
   const navigate = useNavigate();
 
   return (
     <div className="container">
-      <section className="hero-card">
-        <div className="hero-content">
-          <div className="badge-row">
-            <span className="badge badge-navy">PPG Prajabatan / Calon Guru UNY</span>
-            <span className="badge badge-gold">Bidang Studi Informatika</span>
+      <div className="page-header portfolio-banner-profile">
+        <div className="badge-row">
+          <span className="badge badge-white">PROFIL &amp; IDENTITAS AKADEMIK</span>
+          <span className="badge badge-gold">PPG Calon Guru Informatika UNY</span>
+        </div>
+        <h2>{teacherIdentity.name}</h2>
+        <p>
+          NIM {teacherIdentity.nim} • Bidang Studi {teacherIdentity.field} • Praktik Pengalaman Lapangan (PPL) di{' '}
+          {teacherIdentity.school}
+        </p>
+      </div>
+
+      {/* ── IDENTITAS LENGKAP & SUPERVISI ── */}
+      <section className="card section-block">
+        <span className="section-tag">IDENTITAS PROFESIONAL &amp; KONTEKS PPL</span>
+        <h3>Data Diri Calon Guru &amp; Ekosistem Pembelajaran</h3>
+        <div className="grid-2" style={{ marginTop: '1rem' }}>
+          <div className="sub-card">
+            <h4>🎓 Identitas Akademik Mahasiswa PPG</h4>
+            <table className="mini-table" style={{ marginTop: '0.5rem' }}>
+              <tbody>
+                <tr>
+                  <td><strong>Nama Lengkap</strong></td>
+                  <td>{teacherIdentity.name}</td>
+                </tr>
+                <tr>
+                  <td><strong>Nomor Induk Mahasiswa</strong></td>
+                  <td><code>{teacherIdentity.nim}</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Program Pendidikan</strong></td>
+                  <td>{teacherIdentity.program}</td>
+                </tr>
+                <tr>
+                  <td><strong>Bidang Studi</strong></td>
+                  <td>{teacherIdentity.field}</td>
+                </tr>
+                <tr>
+                  <td><strong>LPTK Penyelenggara</strong></td>
+                  <td>{teacherIdentity.university}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <h2 className="hero-title">
-            Dokumentasi Perjalanan & Transformasi Kompetensi Calon Guru Informatika
-          </h2>
-          <p className="hero-lead">
-            Selamat datang di E-Portfolio profesional <strong>{teacherIdentity.name}</strong>.
-            Website ini menyajikan bukti nyata bagaimana saya bertumbuh dari tahap asistensi
-            menuju pelaksanaan pembelajaran mandiri melalui penyempurnaan perangkat ajar,
-            inovasi simulasi <em>unplugged</em>, pengelolaan kelas vokasi pada jam siang,
-            serta refleksi jujur berbasis umpan balik di <strong>{teacherIdentity.school}</strong>.
+
+          <div className="sub-card">
+            <h4>🏫 Konteks Sekolah Mitra &amp; Supervisi PPL</h4>
+            <table className="mini-table" style={{ marginTop: '0.5rem' }}>
+              <tbody>
+                <tr>
+                  <td><strong>Sekolah Mitra PPL</strong></td>
+                  <td>{teacherIdentity.school}</td>
+                </tr>
+                <tr>
+                  <td><strong>Mata Pelajaran / Fase</strong></td>
+                  <td>{teacherIdentity.subject}</td>
+                </tr>
+                <tr>
+                  <td><strong>Kelas Utama &amp; Jumlah</strong></td>
+                  <td>{teacherIdentity.mainClass} ({teacherIdentity.studentCount})</td>
+                </tr>
+                <tr>
+                  <td><strong>Karakteristik Jadwal</strong></td>
+                  <td>{teacherIdentity.scheduleContext}</td>
+                </tr>
+                <tr>
+                  <td><strong>Guru Pamong</strong></td>
+                  <td>{teacherIdentity.mentorTeacher}</td>
+                </tr>
+                <tr>
+                  <td><strong>Dosen Pembimbing (DPL)</strong></td>
+                  <td>{teacherIdentity.supervisorLecturer}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* ── VISI & MISI PENDIDIK ── */}
+      <section className="card section-block">
+        <span className="section-tag">ARAH PEDAGOGIK</span>
+        <h3>Visi &amp; Misi Profesional sebagai Calon Guru Informatika</h3>
+        <blockquote className="academic-quote">
+          "{teacherIdentity.vision}"
+        </blockquote>
+
+        <div className="grid-2" style={{ marginTop: '1.15rem' }}>
+          {teacherIdentity.missions.map((mission, idx) => (
+            <div key={idx} className="sub-card">
+              <span className="badge badge-navy">Misi {idx + 1}</span>
+              <p style={{ marginTop: '0.55rem' }}>{mission}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 4 KOMPETENSI UTAMA GURU PPG ── */}
+      <section className="card section-block">
+        <span className="section-tag">CAPAIAN KOMPETENSI</span>
+        <h3>Pemetaan 4 Kompetensi Guru Selama Praktik Pengalaman Lapangan</h3>
+        <p>
+          Bukti nyata penguasaan kompetensi Pedagogik, Profesional, Kepribadian, dan Sosial yang terbangun
+          melalui proses asistensi, pelaksanaan siklus mandiri, dan refleksi bersama Guru Pamong serta DPL:
+        </p>
+
+        <div className="grid-2" style={{ marginTop: '1.1rem' }}>
+          {teacherIdentity.competencies.map((comp, idx) => (
+            <div key={idx} className="sub-card">
+              <div className="badge-row" style={{ marginBottom: '0.4rem' }}>
+                <span className="badge badge-navy">{comp.domain}</span>
+                <span className="badge badge-gold">{comp.badge}</span>
+              </div>
+              <h4>{comp.domain}</h4>
+              <p style={{ marginBottom: '0.65rem' }}>{comp.summary}</p>
+              <div style={{ fontSize: '0.84rem', background: '#fff', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <strong>Bukti Autentik di Portofolio:</strong> {comp.evidence}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── BIDANG MINAT & KEAHLIAN INFORMATIKA ── */}
+      <section className="card section-block">
+        <span className="section-tag">SPESIALISASI KEILMUAN</span>
+        <h3>Fokus Keilmuan Informatika &amp; Relevansi Vokasi</h3>
+        <div className="grid-3">
+          {teacherIdentity.interests.map((item, idx) => (
+            <div key={idx} className="sub-card">
+              <div style={{ fontSize: '1.75rem', marginBottom: '0.35rem' }}>{item.icon}</div>
+              <h4>{item.title}</h4>
+              <p style={{ fontSize: '0.9rem' }}>{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="analysis-box">
+          <h4>Pendekatan Kontekstual untuk Siswa SMK Teknik Permesinan</h4>
+          <p>
+            Sebagai guru Informatika di SMK Negeri 2 Yogyakarta, saya berupaya agar materi komputasi tidak
+            terasa asing bagi siswa jurusan <strong>Teknik Permesinan</strong>. Pada Siklus 1, konsep
+            <em> Abstraksi</em> dalam Berpikir Komputasional saya kaitkan langsung dengan identifikasi bagian
+            utama <strong>Mesin Bubut</strong> (Prinsip Kerja, Fungsi Utama, dan Jenis-jenisnya). Pada Siklus 2,
+            konsep memori <em>ROM/RAM</em> serta antarmuka <em>CLI vs GUI</em> saya hubungkan dengan cara kerja
+            instruksi program pada <strong>Mesin CNC (Computer Numerical Control)</strong>.
           </p>
-          <div className="hero-buttons">
-            <button className="btn btn-primary" onClick={() => navigate('/uts')}>
-              Buka E-Portfolio 1 (UTS)
-            </button>
-            <button className="btn btn-secondary" onClick={() => navigate('/uas')}>
-              Buka E-Portfolio 2 (UAS)
-            </button>
-            <button className="btn btn-outline" onClick={() => navigate('/profil')}>
-              Profil & Kompetensi Guru
-            </button>
-          </div>
         </div>
 
-        <div className="hero-stats-box">
-          <h3>Konteks Utama Praktik (PPL)</h3>
-          <ul className="context-list">
-            <li><strong>Sekolah Praktik:</strong> SMK Negeri 2 Yogyakarta</li>
-            <li><strong>Kelas Utama:</strong> X TP 1 (Teknik Permesinan 1)</li>
-            <li><strong>Jumlah Peserta Didik:</strong> 36 Orang</li>
-            <li><strong>Waktu Pembelajaran:</strong> Jam Siang (12.30–15.00 WIB)</li>
-            <li><strong>Sistem Jadwal:</strong> Sistem Blok (2 Kelas Bergantian)</li>
-            <li><strong>Guru Pamong:</strong> Juwari, S.T.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="section-block">
-        <div className="section-heading">
-          <h2>Dua Bagian Utama E-Portfolio</h2>
-          <p>Terintegrasi dalam satu sistem navigasi dengan tautan langsung untuk keperluan asesmen UTS dan UAS.</p>
-        </div>
-
-        <div className="dual-cards">
-          <div className="portfolio-main-card">
-            <div className="card-header-strip strip-blue">E-PORTFOLIO 1 — UJIAN TENGAH SEMESTER (UTS)</div>
-            <div className="card-body">
-              <h3>Praktik Terbaik Siklus 1: Berpikir Komputasional, Struktur Data & Algoritma</h3>
-              <p>
-                Mendokumentasikan dua rangkaian pertemuan di kelas X TP 1: pengenalan 4 fondasi
-                Berpikir Komputasional (dengan abstraksi Mesin Bubut) serta praktik mengajar
-                Struktur Data & Algoritma (<em>Linear/Binary Search, Bubble/Selection Sort, Stack, Queue</em>)
-                yang didukung rekaman video mengajar berdurasi 1 jam 33 menit.
-              </p>
-              <ul className="feature-List">
-                <li>✓ Slide PDF Asli Berpikir Komputasional (31 Halaman)</li>
-                <li>✓ Video Praktik Mengajar Terverifikasi + Analisis Timestamp</li>
-                <li>✓ Simulasi Kartu Angka (Roleplay) & Permainan Tebak Angka 1–100</li>
-                <li>✓ Kuis Evaluasi Interaktif (Rata-rata Kelas 81%) & Refleksi LK.4 Siklus 1</li>
-              </ul>
-              <button className="btn btn-primary full-width" onClick={() => navigate('/uts')}>
-                Jelajahi Halaman E-Portfolio UTS (/uts) →
-              </button>
-            </div>
-          </div>
-
-          <div className="portfolio-main-card">
-            <div className="card-header-strip strip-gold">E-PORTFOLIO 2 — UJIAN AKHIR SEMESTER (UAS)</div>
-            <div className="card-body">
-              <h3>Praktik Terbaik Siklus 2–4: Sistem Komputer & Transformasi Desain Pembelajaran</h3>
-              <p>
-                Menampilkan materi terkuat dari rangkaian Siklus 2–4 yakni <strong>Sistem Komputer</strong>
-                (didukung 91 slide bahan ajar asli), disertai analisis bagaimana sistem penjadwalan
-                blok dimanfaatkan untuk memperbaiki kelemahan LKM, merombak sistematika RPP (Siklus 3),
-                dan menerapkan instruksi praktik bertahap (Siklus 4).
-              </p>
-              <ul className="feature-List">
-                <li>✓ Evaluasi Objektif 3 Kandidat Materi (Sistem Komputer, Analisis Data, MS Word)</li>
-                <li>✓ Slide PDF Asli Sistem Komputer (91 Halaman) & Simulasi CLI Command Prompt</li>
-                <li>✓ Rekonstruksi & Pengembangan LKM Pasca-Refleksi Siklus 2</li>
-                <li>✓ Narasi Perkembangan Kompetensi Lintas Siklus (Siklus 2 ke Siklus 3 & 4)</li>
-              </ul>
-              <button className="btn btn-secondary full-width" onClick={() => navigate('/uas')}>
-                Jelajahi Halaman E-Portfolio UAS (/uas) →
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section-block highlight-box">
-        <div className="grid-2">
-          <div className="card">
-            <h3>Visi Sebagai Calon Guru Informatika</h3>
-            <blockquote className="academic-quote">
-              "{teacherIdentity.vision}"
-            </blockquote>
-            <p>
-              Dalam menghadapi peserta didik SMK jurusan Teknik Permesinan pada jam rawan mengantuk
-              (12.30–15.00 WIB), saya belajar bahwa penguasaan materi Informatika saja tidak cukup.
-              Guru harus mampu menerjemahkan konsep abstrak menjadi simulasi konkret, menyusun
-              LKM yang jelas, dan mengelola kelas secara adaptif.
-            </p>
-          </div>
-          <div className="card">
-            <h3>Garis Besar Pertumbuhan 5 Tahap PPL</h3>
-            <ol className="styled-list">
-              <li>
-                <strong>Praktik Asistensi (LK.3):</strong> Identifikasi masalah tujuan ABCD yang belum utuh, ketidakselarasan asesmen, dan siswa yang mengantuk.
-              </li>
-              <li>
-                <strong>Siklus 1 (Berpikir Komputasional & Struktur Data):</strong> Kontekstualisasi mesin bubut, kendala Quizizz & font slide kecil, diatasi dengan <em>roleplay</em> kartu angka & kuis (rata-rata 81%).
-              </li>
-              <li>
-                <strong>Siklus 2 (Sistem Komputer):</strong> Perbaikan ukuran visual slide (91 hal), evaluasi kritis ketidaksiapan LKM, dan fokus penguasaan kelas.
-              </li>
-              <li>
-                <strong>Siklus 3 (Analisis Data):</strong> Penyelarasan contoh tabel/diagram nilai dan penataan ulang sistematika RPP sesuai kaidah.
-              </li>
-              <li>
-                <strong>Siklus 4 (Microsoft Word):</strong> Penerapan demonstrasi langsung, praktik mandiri pembuatan laporan, dan <em>scaffolding</em> bertahap.
-              </li>
-            </ol>
-          </div>
+        <div style={{ marginTop: '1.35rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button className="btn btn-primary" onClick={() => navigate('/uts')}>
+            Lihat Bukti Mengajar di E-Portfolio UTS →
+          </button>
+          <button className="btn btn-secondary" onClick={() => navigate('/uas')}>
+            Lihat Pengembangan Materi di E-Portfolio UAS →
+          </button>
+          <button className="btn btn-outline" onClick={() => setPreviewDoc(documentInventory[3])}>
+            Pratinjau LK.3 Refleksi Asistensi (PDF)
+          </button>
         </div>
       </section>
     </div>

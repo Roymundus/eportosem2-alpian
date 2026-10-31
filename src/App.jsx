@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import PdfModal from './components/Pdfmodal';
+import PdfModal from './components/PdfModal';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import PortofolioUTS from './pages/PortofolioUTS';
@@ -28,8 +28,8 @@ export default function App() {
         <Navbar />
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profil" element={<Profile />} />
+            <Route path="/" element={<Home setPreviewDoc={setPreviewDoc} />} />
+            <Route path="/profil" element={<Profile setPreviewDoc={setPreviewDoc} />} />
             <Route path="/uts" element={<PortofolioUTS setPreviewDoc={setPreviewDoc} />} />
             <Route path="/uas" element={<PortofolioUAS setPreviewDoc={setPreviewDoc} />} />
             <Route path="/perjalanan" element={<Journey setPreviewDoc={setPreviewDoc} />} />

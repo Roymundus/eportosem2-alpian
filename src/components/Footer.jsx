@@ -9,27 +9,39 @@ export default function Footer() {
         <div>
           <h3>E-Portfolio PPG Calon Guru Informatika</h3>
           <p>
-            Dokumentasi autentik perencanaan, pelaksanaan, asesmen, analisis, dan
-            refleksi pembelajaran selama Praktik Pengalaman Lapangan (PPL) di {teacherIdentity.school}.
+            Dokumentasi autentik perencanaan, pelaksanaan, asesmen, analisis hasil belajar, dan
+            refleksi pembelajaran berkelanjutan selama Praktik Pengalaman Lapangan (PPL) di{' '}
+            <strong>{teacherIdentity.school}</strong>.
           </p>
-          <p style={{ marginTop: '0.75rem' }}>
+          <p style={{ marginTop: '0.85rem', color: '#f8fafc' }}>
             Disusun oleh: <strong>{teacherIdentity.name}</strong> (NIM: {teacherIdentity.nim})
           </p>
         </div>
 
         <div>
-          <h4>Tiga Tautan Pengumpulan Langsung</h4>
+          <h4>Navigasi Cepat &amp; Tautan Pengumpulan</h4>
           <ul className="footer-links">
-            <li><Link to="/">1. Tautan Utama Website (/)</Link></li>
-            <li><Link to="/uts">2. Tautan Langsung E-Portfolio 1 – UTS (/uts)</Link></li>
-            <li><Link to="/uas">3. Tautan Langsung E-Portfolio 2 – UAS (/uas)</Link></li>
+            <li><Link to="/">1. Halaman Utama Website (/)</Link></li>
+            <li><Link to="/profil">2. Profil &amp; Kompetensi Guru (/profil)</Link></li>
+            <li><Link to="/uts">3. E-Portfolio 1 – UTS Siklus 1 (/uts)</Link></li>
+            <li><Link to="/uas">4. E-Portfolio 2 – UAS Siklus 2–4 (/uas)</Link></li>
+            <li><Link to="/perjalanan">5. Matriks Perjalanan &amp; Bukti PPG (/perjalanan)</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4>Supervisi Akademik</h4>
-          <p><strong>Dosen Pembimbing Lapangan:</strong><br />{teacherIdentity.supervisorLecturer}</p>
-          <p style={{ marginTop: '0.5rem' }}><strong>Guru Pamong:</strong><br />{teacherIdentity.mentorTeacher}</p>
+          <h4>Supervisi Akademik PPL</h4>
+          <p>
+            <strong>Dosen Pembimbing Lapangan (DPL):</strong><br />
+            {teacherIdentity.supervisorLecturer}
+          </p>
+          <p style={{ marginTop: '0.65rem' }}>
+            <strong>Guru Pamong:</strong><br />
+            {teacherIdentity.mentorTeacher}
+          </p>
+          <p style={{ marginTop: '0.65rem', fontSize: '0.8rem', color: '#94a3b8' }}>
+            Disahkan pada {teacherIdentity.approvalDate} • {teacherIdentity.university}
+          </p>
         </div>
       </div>
     </footer>

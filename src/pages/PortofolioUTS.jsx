@@ -1,129 +1,112 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { documentInventory, uasCandidateComparison } from '../data/PortofolioData';
+import { documentInventory, videoTimestamps } from '../data/PortofolioData';
 
-export default function PortofolioUAS({ setPreviewDoc }) {
-  const [uasTab, setUasTab] = useState('semua');
+const INITIAL_BUBBLE_CARDS = [44, 10, 60, 2, 55, 43];
+const BUBBLE_STEPS = [
+  { cards: [44, 10, 60, 2, 55, 43], note: "Posisi awal 6 siswa di depan kelas memegang kartu angka acak (sebelum diurutkan)." },
+  { cards: [10, 44, 2, 55, 43, 60], note: "Iterasi 1: Membandingkan pasangan berdekatan; angka terbesar (60) menggelembung ke posisi paling kanan." },
+  { cards: [10, 2, 44, 43, 55, 60], note: "Iterasi 2: Pertukaran (44, 2) dan (55, 43) menempatkan 55 dan 60 pada urutan akhir yang benar." },
+  { cards: [2, 10, 43, 44, 55, 60], note: "Hasil Akhir Terurut [00:23:00]: Barisan siswa berhasil membentuk urutan naik 2, 10, 43, 44, 55, 60!" }
+];
+
+export default function PortofolioUTS({ setPreviewDoc }) {
+  const [utsTab, setUtsTab] = useState('semua');
+  const [videoStart, setVideoStart] = useState(0);
+  const [activeTs, setActiveTs] = useState(null);
+  const [sortStep, setSortStep] = useState(0);
 
   const sections = [
     { id: 'semua', label: 'Tampilkan Semua' },
-    { id: 'pemilihan', label: 'Evaluasi Kandidat Materi' },
     { id: 'pendahuluan', label: '1. Pendahuluan' },
-    { id: 'perencanaan', label: '2. Perencanaan' },
-    { id: 'materi', label: '3. Materi (91 Slide)' },
-    { id: 'media', label: '4. Media' },
-    { id: 'dokumentasi', label: '5. Dokumentasi' },
-    { id: 'asesmen', label: '6. Asesmen' },
-    { id: 'refleksi', label: '7. Refleksi & Perkembangan' }
+    { id: 'perencanaan', label: '2. Perencanaan (ABCD)' },
+    { id: 'materi', label: '3. Materi (BK & Struktur Data)' },
+    { id: 'media', label: '4. Media & Simulasi Kartu' },
+    { id: 'dokumentasi', label: '5. Video Mengajar (01:33:48)' },
+    { id: 'asesmen', label: '6. Asesmen (Rata-rata 81%)' },
+    { id: 'refleksi', label: '7. Refleksi LK.4 Siklus 1' }
   ];
 
-  const showSection = (id) => uasTab === 'semua' || uasTab === id;
+  const showSection = (id) => utsTab === 'semua' || utsTab === id;
+
+  const handleJumpToTime = (ts) => {
+    setVideoStart(ts.seconds);
+    setActiveTs(ts.time);
+    const el = document.getElementById('uts-video-player');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   return (
     <div className="container">
-      <div className="page-header portfolio-banner-uas">
+      <div className="page-header portfolio-banner-uts">
         <div className="badge-row">
-          <span className="badge badge-white">BAGIAN II — E-PORTFOLIO 2 (UAS)</span>
-          <span className="badge badge-navy">Praktik Terbaik Siklus 2–4 & Sistem Blok</span>
+          <span className="badge badge-white">BAGIAN I — E-PORTFOLIO 1 (UTS)</span>
+          <span className="badge badge-gold">Praktik Terbaik Siklus 1 Mandiri</span>
+          <span className="badge badge-emerald">Bukti Lengkap: 31 Slide PDF + Video 93 Menit + LK.4</span>
         </div>
-        <h2>Sistem Komputer & Pengembangan Kualitas Pembelajaran Lintas Siklus</h2>
+        <h2>Berpikir Komputasional, Struktur Data &amp; Algoritma</h2>
         <p>
-          Kelas X TP 1 (Teknik Permesinan 1) • SMK Negeri 2 Yogyakarta • Materi Utama Terpilih: Sistem Komputer (Siklus 2)
+          Kelas X TP 1 (Teknik Permesinan 1 — 36 Peserta Didik) • SMK Negeri 2 Yogyakarta • Jam Siang (12.30–15.00 WIB)
         </p>
       </div>
 
-      <div className="sub-nav">
+      <div className="sub-nav" role="tablist" aria-label="Filter Bagian E-Portfolio UTS">
         {sections.map((sec) => (
           <button
             key={sec.id}
-            className={uasTab === sec.id ? 'sub-nav-btn active' : 'sub-nav-btn'}
-            onClick={() => setUasTab(sec.id)}
+            className={utsTab === sec.id ? 'sub-nav-btn active' : 'sub-nav-btn'}
+            onClick={() => setUtsTab(sec.id)}
           >
             {sec.label}
           </button>
         ))}
       </div>
 
-      {/* MATRIKS EVALUASI PEMILIHAN MATERI UAS */}
-      {showSection('pemilihan') && (
-        <section className="card section-block">
-          <div className="section-tag">RASIONALISASI PEMILIHAN MATERI UAS</div>
-          <h3>Evaluasi Tiga Kandidat Materi (Siklus 2, Siklus 3, dan Siklus 4)</h3>
-          <p>
-            Sesuai pedoman E-Portfolio UAS, pemilihan materi tidak dipaksakan menampilkan seluruh topik apabila bukti
-            pendukungnya belum lengkap. Berikut adalah perbandingan objektif ketiga kandidat materi berdasarkan
-            dokumen yang tersedia:
-          </p>
-
-          <div className="table-responsive">
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th>Kriteria Evaluasi</th>
-                  <th className="highlight-col">Kandidat 1: Sistem Komputer (Siklus 2) — TERPILIH</th>
-                  <th>Kandidat 2: Analisis Data (Siklus 3)</th>
-                  <th>Kandidat 3: Microsoft Word (Siklus 4)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {uasCandidateComparison.map((row, idx) => (
-                  <tr key={idx}>
-                    <td><strong>{row.aspect}</strong></td>
-                    <td className="highlight-col">{row.c1}</td>
-                    <td>{row.c2}</td>
-                    <td>{row.c3}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="alert-box alert-info">
-            <strong>Keputusan Akademik:</strong> Materi <strong>Sistem Komputer (Siklus 2)</strong> dipilih sebagai
-            fokus utama E-Portfolio UAS karena memiliki bukti bahan ajar paling lengkap dan terverifikasi
-            (<code>Sistem Komputer - X TP 1 SMK N 2 Yogyakarta_compressed.pdf</code> setebal 91 halaman serta
-            <code>LK.4 Refleksi 2</code>). Sementara itu, bukti dari <strong>Siklus 3 (Analisis Data)</strong> dan
-            <strong>Siklus 4 (Microsoft Word)</strong> diintegrasikan pada Bagian 7 untuk membuktikan kesinambungan
-            tindak lanjut perbaikan RPP dan metode praktik langsung secara jujur tanpa mengarang dokumen yang belum tersedia.
-          </div>
-        </section>
-      )}
-
       {/* 1. PENDAHULUAN */}
       {showSection('pendahuluan') && (
         <section className="card section-block">
           <div className="section-tag">BAGIAN 1</div>
-          <h3>1. Pendahuluan & Konteks Sistem Blok</h3>
+          <h3>1. Pendahuluan &amp; Konteks Pembelajaran Kelas Vokasi</h3>
           <div className="grid-2">
             <div>
-              <h4>Latar Belakang & Karakteristik Pembelajaran</h4>
+              <h4>Latar Belakang &amp; Tantangan Jam Siang (12.30–15.00 WIB)</h4>
               <p>
-                Memasuki Siklus 2 di kelas <strong>X Teknik Permesinan 1 (36 peserta didik)</strong>, fokus
-                pembelajaran beralih pada elemen <strong>Sistem Komputer</strong>. Tantangan pembelajaran siang
-                hari (pukul 12.30–15.00 WIB) dan keberagaman pemahaman awal peserta didik tetap menjadi konteks
-                utama yang harus dikelola. Sebagian peserta didik setiap hari menggunakan <em>smartphone</em> dan
-                komputer, namun belum memahami bagaimana komponen perangkat keras (<em>hardware</em>), perangkat
-                lunak (<em>software</em>), dan pengguna (<em>brainware</em>) saling berinteraksi mengolah data.
+                Pada Siklus 1 Praktik Pengalaman Lapangan (PPL) Mandiri di <strong>SMK Negeri 2 Yogyakarta</strong>,
+                saya mengampu mata pelajaran <strong>Informatika (Fase E)</strong> di kelas <strong>X Teknik
+                Permesinan 1 (X TP 1)</strong> yang berjumlah <strong>36 peserta didik</strong>. Pembelajaran
+                berlangsung pada jam siang (12.30–15.00 WIB) setelah siswa mengikuti rangkaian pelajaran
+                kejuruan.
+              </p>
+              <p style={{ marginTop: '0.6rem' }}>
+                Berdasarkan hasil observasi pada tahap <strong>Praktik Asistensi (<code>LK.3.PPLM</code>)</strong>,
+                tantangan utama yang dihadapi adalah perbedaan tingkat pemahaman awal siswa, keterbatasan waktu
+                diskusi, serta kecenderungan sebagian siswa yang <strong>pasif, mengantuk, bahkan tertidur</strong>
+                apabila pembelajaran didominasi metode ceramah satu arah.
               </p>
             </div>
+
             <div>
-              <h4>Peran Sistem Penjadwalan Blok dalam Perbaikan Pembelajaran</h4>
+              <h4>Solusi Pedagogik pada Siklus 1 (2 Rangkaian Pertemuan)</h4>
               <p>
-                SMK Negeri 2 Yogyakarta menerapkan <strong>sistem jadwal blok</strong> di mana saya mengajar dua
-                kelas secara bergantian. Sistem blok ini memungkinkan terjadinya siklus perbaikan atas materi yang
-                sama:
+                Untuk menjawab tantangan tersebut sekaligus menindaklanjuti masukan Guru Pamong (Bapak Juwari,
+                S.T.) dan DPL (Bapak Dr. Ir. Satriyo Agung Dewanto, M.Pd.), rangkaian Siklus 1 dirancang dalam
+                dua pertemuan yang saling terhubung:
               </p>
               <ul className="styled-list">
                 <li>
-                  <strong>Perbaikan dari Siklus 1 ke Siklus 2:</strong> Menindaklanjuti masukan Guru Pamong pada
-                  Siklus 1 tentang ukuran huruf slide yang terlalu kecil, slide materi Sistem Komputer dirancang
-                  ulang dengan tipografi besar, kontras jelas, dan pemenggalan konsep satu topik per slide.
+                  <strong>Pertemuan 1 — Fondasi Berpikir Komputasional (31 Slide PDF Asli):</strong> Membومikan
+                  konsep <em>Dekomposisi, Pengenalan Pola, Abstraksi,</em> dan <em>Algoritma</em> melalui aktivitas
+                  harian (memasak mi instan &amp; mencuci piring), profesi (Teknisi Robot), serta <strong>abstraksi
+                  bagian utama Mesin Bubut</strong> yang dekat dengan dunia Teknik Permesinan.
                 </li>
                 <li>
-                  <strong>Perbaikan Antar-Blok pada Siklus 2:</strong> Ketika pelaksanaan awal Sistem Komputer
-                  mengalami kendala pada penugasan murid akibat LKM yang belum disiapkan matang (LK.4 Refleksi 2),
-                  evaluasi tersebut langsung digunakan untuk menyempurnakan LKM dan instruksi kerja sebelum materi
-                  digunakan kembali pada kelas blok berikutnya.
+                  <strong>Pertemuan Lanjutan — Struktur Data &amp; Algoritma (Rekaman Video 01:33:48):</strong>
+                  Menerapkan pembelajaran aktif berbasis permainan tebak angka 1–100, <strong>simulasi fisik
+                  (<em>roleplay</em>) kartu angka</strong> untuk algoritma <em>Bubble Sort</em> &amp; <em>Selection
+                  Sort</em>, latihan terbimbing <em>Stack (LIFO)</em> &amp; <em>Queue (FIFO)</em>, hingga kuis
+                  evaluasi interaktif dengan <strong>capaian rata-rata kelas 81%</strong>.
                 </li>
               </ul>
             </div>
@@ -133,72 +116,82 @@ export default function PortofolioUAS({ setPreviewDoc }) {
 
       {/* 2. PERENCANAAN PEMBELAJARAN */}
       {showSection('perencanaan') && (
-        <section className="card section-block" id="pengembangan-rpp-uas">
+        <section className="card section-block" id="rekonstruksi-rpp-uts">
           <div className="section-tag">BAGIAN 2</div>
-          <h3>2. Perencanaan Pembelajaran (Rekonstruksi & Pengembangan Perangkat Ajar)</h3>
+          <h3>2. Perencanaan Pembelajaran (Rekonstruksi Modul Ajar Berformat ABCD)</h3>
 
           <div className="alert-box alert-warning">
-            <strong>Label Status Dokumen:</strong> Perangkat pembelajaran (Modul Ajar/RPP dan LKM) di bawah ini
-            merupakan <strong>Dokumen Rekonstruksi dan Pengembangan (Penyempurnaan)</strong> yang disusun
-            berdasarkan materi asli <code>Sistem Komputer - X TP 1 SMK N 2 Yogyakarta_compressed.pdf</code> serta
-            hasil evaluasi kritis pada <code>LK.3</code> dan <code>LK.4 Refleksi 2</code>.
+            <strong>Label Kejujuran Akademik:</strong> Naskah perencanaan (Modul Ajar/RPP) di bawah ini merupakan
+            <strong> Dokumen Rekonstruksi Berdasarkan Praktik</strong> yang merujuk secara akurat pada bahan ajar
+            asli <code>Berpikir Komputasional - X TP 1 SMK N 2 Yogyakarta.pdf</code>, pelaksanaan autentik di dalam
+            video mengajar (<code>01:33:48</code>), serta tindak lanjut atas umpan balik resmi pada
+            <code> LK.3.PPLM</code>.
           </div>
 
           <div className="grid-2">
             <div className="sub-card">
-              <h4>Tujuan Pembelajaran (Format ABCD Hasil Perbaikan)</h4>
+              <h4>Tujuan Pembelajaran (Perbaikan Format ABCD Pasca-LK.3)</h4>
               <ol className="styled-list">
                 <li>
-                  Melalui pengamatan perangkat teknologi sehari-hari (PC, laptop, <em>smartphone</em>, kalkulator)
-                  dan tanya jawab pemantik <strong>(Condition)</strong>, peserta didik kelas X TP 1
-                  <strong>(Audience)</strong> mampu merumuskan pengertian sistem komputer berdasarkan tiga syarat
-                  utamanya (<em>Input, Process, Output</em>) serta mengklasifikasikan komponen <em>Hardware,
-                  Software,</em> dan <em>Brainware</em> <strong>(Behavior)</strong> secara tepat <strong>(Degree)</strong>.
+                  Melalui studi kasus aktivitas sehari-hari dan diskusi permasalahan bengkel kejuruan
+                  <strong> (Condition)</strong>, peserta didik kelas X TP 1 <strong>(Audience)</strong> mampu
+                  menguraikan empat fondasi Berpikir Komputasional (<em>Dekomposisi, Pengenalan Pola, Abstraksi
+                  Mesin Bubut,</em> dan <em>Algoritma</em>) <strong>(Behavior)</strong> secara logis, sistematis,
+                  efektif, dan efisien <strong>(Degree)</strong>.
                 </li>
                 <li>
-                  Melalui kegiatan eksplorasi visual dan diskusi kelompok menggunakan LKM terstruktur
-                  <strong>(Condition)</strong>, peserta didik <strong>(Audience)</strong> mampu menganalisis fungsi
-                  serta perbedaan perangkat keras internal (<em>Motherboard, CPU, RAM, ROM, HDD, SSD, VGA, Sound
-                  Card, NIC</em>) dan eksternal (<em>Input/Output Device</em>) <strong>(Behavior)</strong> dengan
-                  ketepatan minimal 85% <strong>(Degree)</strong>.
+                  Melalui permainan tebak angka 1–100 dan simulasi <em>roleplay</em> kartu angka di depan kelas
+                  <strong> (Condition)</strong>, peserta didik <strong>(Audience)</strong> mampu membandingkan
+                  mekanisme pencarian data (<em>Linear Search</em> vs <em>Binary Search</em>) serta mempraktikkan
+                  langkah pengurutan data (<em>Bubble Sort</em> &amp; <em>Selection Sort</em>)
+                  <strong> (Behavior)</strong> hingga menghasilkan barisan angka terurut dengan tepat
+                  <strong> (Degree)</strong>.
                 </li>
                 <li>
-                  Melalui demonstrasi langsung dan studi komparasi antarmuka <strong>(Condition)</strong>, peserta
-                  didik <strong>(Audience)</strong> mampu membandingkan karakteristik interaksi berbasis teks
-                  (<em>Command Line Interface</em> / CLI) dan grafis (<em>Graphical User Interface</em> / GUI)
-                  serta menjalankan perintah dasar direktori (<code>cd</code>, <code>mkdir</code>, <code>dir</code>)
-                  pada Command Prompt <strong>(Behavior)</strong> sesuai format perintah yang benar <strong>(Degree)</strong>.
+                  Melalui latihan terbimbing di papan tulis dan kuis evaluasi interaktif 22 soal
+                  <strong> (Condition)</strong>, peserta didik <strong>(Audience)</strong> mampu menganalisis
+                  operasi struktur data <em>Stack</em> (LIFO: <code>push/pop</code>) dan <em>Queue</em> (FIFO:
+                  <code> enqueue/dequeue</code>) <strong>(Behavior)</strong> dengan capaian ketuntasan minimal
+                  80% <strong>(Degree)</strong>.
                 </li>
               </ol>
             </div>
 
             <div className="sub-card">
-              <h4>Perbandingan Jujur: Desain Awal vs Penyempurnaan LKM</h4>
-              <p>
-                Salah satu bukti perkembangan terpenting dari perencanaan siklus ini adalah perbaikan atas kesalahan
-                rancangan tugas pada pelaksanaan awal:
-              </p>
-              <table className="mini-table" style={{ marginTop: '0.5rem' }}>
+              <h4>Transformasi Rancangan: Dari Asistensi (LK.3) ke Siklus 1</h4>
+              <table className="mini-table" style={{ marginTop: '0.4rem' }}>
                 <thead>
                   <tr>
-                    <th>Aspek</th>
-                    <th>Pelaksanaan Awal (Bukti LK.4 Refleksi 2)</th>
-                    <th>Rancangan Penyempurnaan (Blok Berikutnya)</th>
+                    <th>Komponen Modul</th>
+                    <th>Kelemahan Saat Asistensi (LK.3)</th>
+                    <th>Perbaikan pada Siklus 1 Mandiri</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Topik Tugas / LKM</strong></td>
-                    <td>Simulasi mengecek kebenaran informasi di media sosial Instagram (kurang selaras dengan inti Sistem Komputer).</td>
-                    <td>Identifikasi Spesifikasi Komponen Komputer (RAM/ROM/SSD/HDD) & Eksperimen Perintah Dasar CLI (<code>cd, mkdir, dir</code>).</td>
+                    <td><strong>Rumusan Tujuan</strong></td>
+                    <td>Belum menerapkan komponen ABCD secara menyeluruh; target ketercapaian belum terukur.</td>
+                    <td>Memuat unsur <em>Audience, Behavior, Condition,</em> dan <em>Degree</em> secara eksplisit.</td>
                   </tr>
                   <tr>
-                    <td><strong>Kesiapan Instruksi</strong></td>
-                    <td>LKM belum dipersiapkan dengan baik; banyak murid bingung cara mengerjakannya dan ada yang tidak mengumpulkan.</td>
-                    <td>Dilengkapi petunjuk langkah demi langkah (<em>step-by-step</em>), tabel kerja terstruktur, dan rubrik penilaian spesifik.</td>
+                    <td><strong>Kesesuaian Asesmen</strong></td>
+                    <td>Halaman asesmen masih memuat topik materi sebelumnya dan belum selaras dengan tujuan awal.</td>
+                    <td>22 soal kuis evaluasi menguji langsung materi BK, Searching, Sorting, Stack, dan Queue yang diajarkan.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pembelajaran Mendalam</strong></td>
+                    <td>Implementasi <em>deep learning</em> dan berpikir kritis belum tampak jelas pada aktivitas modul.</td>
+                    <td>Integrasi studi kasus kewirausahaan, abstraksi Mesin Bubut, dan diskusi kasus duplikasi angka saat Sorting.</td>
                   </tr>
                 </tbody>
               </table>
+              <button
+                className="btn btn-outline btn-sm"
+                style={{ marginTop: '0.85rem' }}
+                onClick={() => setPreviewDoc(documentInventory[3])}
+              >
+                📄 Lihat Bukti Umpan Balik di LK.3 Asistensi (PDF)
+              </button>
             </div>
           </div>
         </section>
@@ -208,300 +201,362 @@ export default function PortofolioUAS({ setPreviewDoc }) {
       {showSection('materi') && (
         <section className="card section-block">
           <div className="section-tag">BAGIAN 3</div>
-          <h3>3. Materi Pembelajaran (Berdasarkan 91 Slide PDF Asli)</h3>
+          <h3>3. Materi Pembelajaran (31 Slide Berpikir Komputasional &amp; Materi Struktur Data)</h3>
           <p>
-            Materi bersumber langsung dari dokumen <code>Sistem Komputer - X TP 1 SMK N 2 Yogyakarta_compressed.pdf</code>
-            (91 halaman) yang digunakan di kelas X Teknik Permesinan 1:
+            Materi pembelajaran Siklus 1 memadukan fondasi pola pikir komputasi dengan penerapannya pada algoritma
+            pencarian, pengurutan, dan struktur data:
           </p>
 
           <div className="grid-2" style={{ marginTop: '1rem' }}>
             <div className="sub-card">
-              <h4>1. Konsep Komputer & Klasifikasinya (Slide 1–16)</h4>
+              <span className="badge badge-navy">Pertemuan 1 • 31 Slide PDF Asli</span>
+              <h4>A. Fondasi Berpikir Komputasional &amp; Konteks Vokasi</h4>
               <ul className="styled-list">
-                <li><strong>Pemantik Kognitif (Slide 3–5):</strong> Menguji apakah PC, <em>Smartphone</em>, dan Kalkulator termasuk komputer.</li>
-                <li><strong>Syarat Mutlak Komputer (Slide 6–9):</strong> Menerima masukan (<em>Input</em>), memproses secara komputasi (<em>Process</em>), dan menghasilkan keluaran (<em>Output</em>: Gambar, Teks, Video, Suara).</li>
-                <li><strong>Tiga Komponen Utama (Slide 10–14):</strong> Interaksi antara <em>Hardware</em> (komponen fisik), <em>Software</em> (kode program), dan <em>Brainware</em> (programmer, pelajar, pengajar).</li>
-                <li><strong>4 Jenis Komputer (Slide 15–16):</strong> <em>Komputer Mikro</em> (menggunakan mikroprosesor, termasuk smartphone), <em>Personal Computer</em>, <em>Komputer Mainframe</em> (server perbankan), dan <em>Super Komputer</em> (triliunan instruksi/detik untuk cuaca, militer, transportasi).</li>
+                <li>
+                  <strong>Definisi &amp; 4 Karakteristik (Slide 3–4):</strong> Cara berpikir menyelesaikan masalah
+                  secara <em>Logis</em> (masuk akal), <em>Sistematis</em> (teratur menurut sistem),
+                  <em> Efisien</em> (hemat waktu, tenaga, biaya), dan <em>Efektif</em> (tepat guna/membawa hasil).
+                </li>
+                <li>
+                  <strong>Contoh Harian &amp; Cek Konsep (Slide 6–11):</strong> Algoritma memasak mi instan (8
+                  langkah dengan efisiensi membuka bumbu sembari menunggu air mendidih), mencuci piring (5 langkah),
+                  serta studi perbandingan <em>Jono vs Sinta</em> saat mencuci baju.
+                </li>
+                <li>
+                  <strong>Relevansi Profesi (Slide 13–16):</strong> Penerapan BK pada <em>Teknisi Robot</em>,
+                  <em> Pelajar</em>, dan analisis dampak jika <em>Kurir Ekspedisi</em> tidak menerapkan BK.
+                </li>
+                <li>
+                  <strong>4 Fondasi BK &amp; Abstraksi Mesin Bubut (Slide 17–22):</strong> <em>Dekomposisi</em>
+                  (menguraikan masalah kompleks), <em>Pengenalan Pola</em>, <strong>Abstraksi (mengidentifikasi
+                  bagian utama Mesin Bubut: Prinsip Kerja, Fungsi Utama, Jenis-jenis)</strong>, dan
+                  <em> Algoritma</em>.
+                </li>
+                <li>
+                  <strong>Studi Kasus Kewirausahaan Sekolah (Slide 23–29):</strong> Analisis penjualan produk
+                  keripik singkong dari sekolah (modal Rp10.000,00) menggunakan keempat fondasi BK untuk
+                  memaksimalkan keuntungan.
+                </li>
               </ul>
+              <button
+                className="btn btn-primary btn-sm"
+                style={{ marginTop: '0.65rem' }}
+                onClick={() => setPreviewDoc(documentInventory[0])}
+              >
+                📘 Pratinjau Slide PDF Berpikir Komputasional (31 Hal)
+              </button>
             </div>
 
             <div className="sub-card">
-              <h4>2. Hardware Internal & Eksternal (Slide 17–64)</h4>
+              <span className="badge badge-gold">Pertemuan Lanjutan • Video Praktik</span>
+              <h4>B. Algoritma Searching, Sorting, Stack &amp; Queue</h4>
               <ul className="styled-list">
-                <li><strong>Motherboard & CPU (Slide 22–23):</strong> Motherboard sebagai pusat komunikasi slot internal; CPU sebagai otak eksekusi instruksi dan <em>boot system</em>.</li>
-                <li><strong>Memori & Penyimpanan (Slide 24–39):</strong> Perbandingan mendalam antara <strong>RAM</strong> (memori sementara/<em>volatile</em>, baca-tulis-modifikasi cepat), <strong>ROM</strong> (memori permanen <em>read-only</em> penyimpan program dasar), <strong>HDD</strong> (penyimpanan permanen piringan berputar), dan <strong>SSD NVMe</strong> (berbasis chip, daya 2–3W, waktu booting 10–13 detik, kecepatan 200–550 MB/s).</li>
-                <li><strong>Kartu Ekspansi & Port (Slide 40–56):</strong> <em>Graphic Card / VGA</em>, perbandingan port VGA (analog visual) vs HDMI (digital visual + audio), <em>Sound Card</em>, dan <em>Network Interface Card (NIC)</em> port RJ-45.</li>
-                <li><strong>Hardware Eksternal (Slide 57–64):</strong> Perangkat <em>Input</em> (Keyboard, Mouse, Webcam, Microphone) dan <em>Output</em> (Monitor, Proyektor, Printer, Speaker).</li>
+                <li>
+                  <strong>Pencarian Data (Searching):</strong> Perbandingan <em>Linear Search</em> (pencarian
+                  berurutan satu per satu dari awal) dengan <em>Binary Search</em> (pencarian membagi dua nilai
+                  tengah yang mewajibkan <strong>syarat mutlak data sudah terurut</strong>).
+                </li>
+                <li>
+                  <strong>Pengurutan Data (Sorting):</strong> Mekanisme <em>Bubble Sort</em> (membandingkan dan
+                  menukar dua elemen berdekatan secara berulang) dan <em>Selection Sort</em> (mencari nilai
+                  terkecil/variabel minimal dalam barisan lalu menempatkannya di posisi terdepan).
+                </li>
+                <li>
+                  <strong>Struktur Data Stack (Tumpukan — LIFO):</strong> Prinsip <em>Last In First Out</em>
+                  (elemen terakhir yang masuk adalah yang pertama keluar) beserta operasi <code>Push</code>
+                  (menambah ke atas), <code>Pop</code> (mengambil dari atas), serta penunjuk <code>Top</code> dan
+                  <code> Base</code>.
+                </li>
+                <li>
+                  <strong>Struktur Data Queue (Antrean — FIFO):</strong> Prinsip <em>First In First Out</em>
+                  (elemen pertama yang masuk adalah yang pertama dilayani) beserta operasi <code>Enqueue</code>
+                  (masuk antrean), <code>Dequeue</code> (keluar antrean), serta posisi <code>Front</code> dan
+                  <code> Rear</code>.
+                </li>
               </ul>
+              <button
+                className="btn btn-outline btn-sm"
+                style={{ marginTop: '0.65rem' }}
+                onClick={() => setPreviewDoc(documentInventory[1])}
+              >
+                🎬 Lihat Ringkasan Bukti Video Struktur Data
+              </button>
             </div>
-
-            <div className="sub-card">
-              <h4>3. Software & Lisensi Hak Cipta (Slide 65–79)</h4>
-              <ul className="styled-list">
-                <li><strong>Karakteristik & Contoh (Slide 65–69):</strong> Seperangkat instruksi program nirfisik (contoh: aplikasi belanja daring & layanan streaming).</li>
-                <li><strong>Hak Cipta & 5 Jenis Lisensi (Slide 71–74):</strong> <em>Freeware, Shareware</em> (batas waktu percobaan), <em>Komersial, Adware,</em> dan <em>Open Source</em>.</li>
-                <li><strong>Klasifikasi Software (Slide 75–79):</strong> <em>Operating System</em> (Windows, macOS, Linux, ChromeOS, Android, iOS, UNIX, BSD), <em>Software Aplikasi</em>, <em>Utility Software</em> (antivirus, backup, kompresi file), dan pengantar <em>Software Programming</em>.</li>
-              </ul>
-            </div>
-
-            <div className="sub-card">
-              <h4>4. Brainware & Interaksi CLI vs GUI (Slide 80–91)</h4>
-              <ul className="styled-list">
-                <li><strong>Peran Brainware (Slide 82–83):</strong> Hardware dan software tidak dapat menjalankan fungsi tanpa inisiasi perintah dari pengguna.</li>
-                <li><strong>Command Line Interface / CLI (Slide 85–90):</strong> Interaksi berbasis <em>Text-Terminal</em> (Command Prompt) dengan aturan sintaks ketat dan perintah direktori: <code>cd</code> (pindah direktori), <code>mkdir</code> (buat folder baru), dan <code>dir</code> (lihat daftar isi direktori).</li>
-                <li><strong>Graphical User Interface / GUI & Matriks Komparasi (Slide 87 & 91):</strong> Perbandingan lengkap CLI vs GUI dari aspek kemudahan pemula, konsumsi RAM/CPU, otomatisasi skrip, kontrol sistem, dan stabilitas koneksi jarak jauh (SSH/CMD).</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ marginTop: '1.25rem' }}>
-            <button
-              className="btn btn-primary"
-              onClick={() => setPreviewDoc(documentInventory[2])}
-            >
-              Pratinjau & Buka File PDF Sistem Komputer (91 Slide)
-            </button>
           </div>
 
           <div className="analysis-box">
-            <h4>Analisis Materi: Relevansi dengan Teknik Permesinan & Evaluasi Kualitas Slide</h4>
+            <h4>Evaluasi Jujur Kualitas Bahan Ajar Siklus 1</h4>
             <p>
-              <strong>Keterkaitan dengan Teknik Permesinan:</strong> Bagi peserta didik kelas X Teknik Permesinan,
-              pemahaman tentang mekanisme <em>Input–Process–Output</em>, perbedaan memori <em>ROM</em> (penyimpan
-              <em>firmware</em> permanen mesin) dengan <em>RAM</em>, serta cara kerja antarmuka <em>CLI</em> (baris
-              kode instruksi) dan <em>GUI</em> merupakan fondasi langsung untuk memahami cara kerja sistem kontrol
-              <strong>Mesin CNC (Computer Numerical Control)</strong> dan komputer industri di bengkel pemesinan.
-            </p>
-            <p style={{ marginTop: '0.5rem' }}>
-              <strong>Kelebihan & Kekurangan:</strong> Kelebihan utama materi ini adalah visualisasinya yang sangat
-              jelas dan ukurannya yang ramah baca bagi seluruh ruang kelas (membuktikan perbaikan nyata atas masukan
-              Guru Pamong di Siklus 1). Adapun kekurangan minor yang dicatat secara objektif adalah adanya typo
-              label <code>Input Device</code> ganda pada slide 59 (yang langsung terkoreksi di slide 60), penulisan
-              <code>SDD</code> pada tabel slide 39, serta slide 79 (<code>Software Programing</code>) yang belum
-              dilengkapi penjabaran isi.
+              Secara substansi, pemilihan contoh <strong>Mesin Bubut</strong> pada Slide 21 sangat tepat karena
+              langsung menyentuh peralatan bengkel yang dipelajari siswa kelas X Teknik Permesinan 1. Namun,
+              evaluasi diri dan masukan Guru Pamong pada <code>LK.4 Refleksi 1</code> mencatat dua kelemahan yang
+              harus diperbaiki: (1) masih terdapat <strong>1 halaman placeholder kosong pada Slide 12</strong>
+              (bertuliskan <em>"SILAHKAN UPLOAD BAHAN PRESENTASI DI SINI"</em>), dan (2) <strong>ukuran huruf
+              (font) pada beberapa slide terlalu kecil</strong> untuk ukuran ruang laboratorium. Temuan ini
+              menjadi dasar perbaikan langsung saat menyusun 91 slide Sistem Komputer di Siklus 2.
             </p>
           </div>
         </section>
       )}
 
-      {/* 4. MEDIA PEMBELAJARAN */}
+      {/* 4. MEDIA PEMBELAJARAN & SIMULASI INTERAKTIF */}
       {showSection('media') && (
         <section className="card section-block">
           <div className="section-tag">BAGIAN 4</div>
-          <h3>4. Media Pembelajaran</h3>
-          <div className="grid-2">
+          <h3>4. Media Pembelajaran &amp; Inovasi Simulasi Fisik (Unplugged Roleplay)</h3>
+          <div className="grid-3">
             <div className="sub-card">
-              <h4>1. Slide Presentasi Visual Terstruktur (91 Halaman)</h4>
+              <h4>1. Slide Interaktif &amp; Animasi Array</h4>
               <p>
-                Media utama berupa slide presentasi yang menerapkan prinsip <em>segmented learning</em>: satu konsep
-                komponen perangkat keras dijelaskan secara bertahap dalam 2–3 slide bergambar besar agar beban
-                kognitif siswa tidak berlebihan dan tulisan terbaca jelas dari barisan belakang.
+                Visualisasi perbandingan langkah demi langkah <em>Linear vs Binary Search</em> dan pergerakan
+                indeks pada <em>Bubble vs Selection Sort</em> melalui proyektor untuk membantu siswa memahami
+                perubahan posisi elemen array.
               </p>
             </div>
             <div className="sub-card">
-              <h4>2. Demonstrasi Langsung Command Prompt (`cmd.exe`)</h4>
+              <h4>2. Permainan Tebak Angka (1–100)</h4>
               <p>
-                Menampilkan antarmuka asli Windows Command Prompt (`Microsoft Windows [Version 10.0.26200.9168]`,
-                path `C:\Users\alpia&gt;`) pada slide 86 & 88 sekaligus mendemonstrasikan cara mengetikkan perintah
-                <code>cd</code>, <code>mkdir</code>, dan <code>dir</code> melalui proyektor.
+                Media apersepsi berpasangan di mana siswa menebak angka rahasia 1–100 dengan petunjuk "lebih
+                besar" atau "lebih kecil" sebagai pengalaman konkret algoritma <em>Binary Search</em>.
+              </p>
+            </div>
+            <div className="sub-card">
+              <h4>3. Roleplay Kartu Angka Kertas</h4>
+              <p>
+                Enam siswa per baris maju ke depan kelas memegang kertas bertuliskan angka acak (1–100) dan
+                mempraktikkan pertukaran fisik <em>Bubble Sort</em> serta penunjukan "komandan variabel minimal"
+                pada <em>Selection Sort</em>.
               </p>
             </div>
           </div>
 
-          <div className="analysis-box">
-            <h4>Analisis Efektivitas Media</h4>
-            <p>
-              Sebagaimana tercermin dalam <code>LK.4.PPLM Refleksi 2</code>, penggunaan media visual yang dikaitkan
-              dengan perangkat sehari-hari (laptop, PC, <em>smartphone</em>) efektif membantu murid memperoleh
-              gambaran konkret mengenai bentuk fisik komponen internal komputer. Namun, refleksi siklus ini
-              menunjukkan pelajaran penting bahwa <strong>efektivitas media tidak hanya ditentukan oleh kualitas
-              visual slide, melainkan oleh cara guru mengintegrasikannya dengan aktivitas kerja murid</strong>.
-              Tanpa LKM kolaboratif yang terstruktur, sebagian murid tetap cenderung pasif sebagai penonton.
+          {/* SIMULATOR INTERAKTIF ROLEPLAY BUBBLE SORT */}
+          <div className="sim-box">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div>
+                <h4>🎮 Visualisasi Interaktif: Roleplay Kartu Angka Bubble Sort di Kelas X TP 1</h4>
+                <p style={{ fontSize: '0.88rem', color: '#cbd5e1' }}>
+                  Merekonstruksi simulasi nyata pada menit <code>[00:23:00]</code> di mana 6 siswa maju ke depan kelas dan mengurutkan kartu angka hingga membentuk urutan <strong>2, 10, 43, 44, 55, 60</strong>:
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  className="btn btn-sm btn-outline"
+                  onClick={() => setSortStep((prev) => Math.max(0, prev - 1))}
+                  disabled={sortStep === 0}
+                >
+                  ◀ Langkah Sebelumnya
+                </button>
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => setSortStep((prev) => (prev + 1) % BUBBLE_STEPS.length)}
+                >
+                  {sortStep === BUBBLE_STEPS.length - 1 ? '↺ Ulangi Simulasi' : 'Langkah Berikutnya ▶'}
+                </button>
+              </div>
+            </div>
+
+            <div className="card-number-row">
+              {BUBBLE_STEPS[sortStep].cards.map((num, idx) => (
+                <div key={idx} className="number-card">
+                  <span>Posisi {idx + 1}</span>
+                  {num}
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: '0.88rem', color: '#fde68a' }}>
+              <strong>Tahap {sortStep + 1} dari {BUBBLE_STEPS.length}:</strong> {BUBBLE_STEPS[sortStep].note}
             </p>
           </div>
         </section>
       )}
 
-      {/* 5. DOKUMENTASI PRAKTIK */}
+      {/* 5. DOKUMENTASI VIDEO MENGAJAR */}
       {showSection('dokumentasi') && (
-        <section className="card section-block">
+        <section className="card section-block" id="uts-video-player">
           <div className="section-tag">BAGIAN 5</div>
-          <h3>5. Dokumentasi Praktik Pembelajaran</h3>
+          <h3>5. Dokumentasi Autentik Video Praktik Mengajar (01:33:48)</h3>
+          <p>
+            Berikut adalah rekaman utuh tanpa rekayasa pelaksanaan pembelajaran Struktur Data &amp; Algoritma di
+            kelas X Teknik Permesinan 1 SMK Negeri 2 Yogyakarta. Klik salah satu kartu <em>timestamp</em> di
+            bawah untuk melompat langsung ke segmen kegiatan tersebut:
+          </p>
 
-          <div className="alert-box alert-warning">
-            <h4>Pernyataan Kejujuran Akademik Terkait Dokumentasi Video Siklus 2</h4>
-            <p>
-              Mematuhi prinsip kejujuran akademik secara ketat, <strong>rekaman video praktik mengajar untuk materi
-              Sistem Komputer (Siklus 2) tidak tersedia</strong>. Saya tidak menggunakan atau mengklaim video dari
-              Siklus 1 (Struktur Data dan Algoritma) seolah-olah berasal dari Siklus 2.
-            </p>
-            <p style={{ marginTop: '0.5rem' }}>
-              <strong>Bukti Autentik Pelaksanaan yang Tersedia & Rekomendasi Konfirmasi Dosen:</strong>
-            </p>
-            <ul className="styled-list">
-              <li>
-                <strong>Bukti Dokumen Materi Asli Kelas X TP 1:</strong> File <code>Sistem Komputer - X TP 1 SMK N 2
-                Yogyakarta_compressed.pdf</code> (91 halaman) yang memuat identitas spesifik kelas dan tangkapan
-                layar terminal asli perangkat pengajar (`C:\Users\alpia&gt;`).
-              </li>
-              <li>
-                <strong>Bukti Lembar Pengesahan Resmi LK.4 Refleksi 2:</strong> Dokumen refleksi pelaksanaan
-                pembelajaran Sistem Komputer yang telah diperiksa dan ditandatangani oleh Guru Pamong (Bapak
-                Juwari, S.T.) dan Dosen Pembimbing Lapangan (Bapak Dr. Ir. Satriyo Agung Dewanto, M.Pd.) pada
-                30 Oktober 2026.
-              </li>
-              <li>
-                <strong>Alternatif Konfirmasi Rubrik:</strong> Apabila rubrik penilaian E-Portfolio UAS mewajibkan
-                peninjauan keterampilan mengajar melalui video, asesor/dosen pengampu dapat meninjau rekaman
-                autentik pada halaman <Link to="/uts">E-Portfolio UTS</Link> dengan catatan transparan bahwa video
-                tersebut merupakan rekaman praktik materi Struktur Data dan Algoritma.
-              </li>
-            </ul>
+          <div className="video-container">
+            <iframe
+              src={`https://www.youtube.com/embed/CBBoBcWRp1o?start=${videoStart}`}
+              title="Video Mengajar Struktur Data & Algoritma - Alpian Roymundus Siringo-ringo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+
+          <div className="video-meta-bar">
+            <span>
+              <strong>Judul Rekaman:</strong> Praktik Mengajar Struktur Data &amp; Algoritma (X TP 1 SMK N 2 Yogyakarta) • Durasi: <code>01:33:48</code>
+            </span>
+            <a
+              href="https://youtu.be/CBBoBcWRp1o?si=zcloXQtEIu3pQxoJ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm"
+            >
+              Buka di YouTube ↗
+            </a>
+          </div>
+
+          <h4>Peta Navigasi 10 Segmen Penting Pembelajaran (Klik untuk Memutar Segmen)</h4>
+          <div className="timestamp-grid">
+            {videoTimestamps.map((ts, idx) => (
+              <div
+                key={idx}
+                className={activeTs === ts.time ? 'timestamp-card active-ts' : 'timestamp-card'}
+                onClick={() => handleJumpToTime(ts)}
+              >
+                <div>
+                  <div className="badge-row" style={{ marginBottom: '0.45rem', justifyContent: 'space-between' }}>
+                    <span className="time-badge">▶ {ts.time}</span>
+                    <span className="badge badge-navy">{ts.phase}</span>
+                  </div>
+                  <h4 style={{ fontSize: '0.96rem', marginBottom: '0.35rem' }}>{ts.title}</h4>
+                  <p style={{ fontSize: '0.86rem', color: '#475569' }}>{ts.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       )}
 
-      {/* 6. ASESMEN DAN ANALISIS HASIL BELAJAR */}
+      {/* 6. ASESMEN & ANALISIS HASIL BELAJAR */}
       {showSection('asesmen') && (
         <section className="card section-block">
           <div className="section-tag">BAGIAN 6</div>
-          <h3>6. Asesmen dan Analisis Hasil Belajar</h3>
+          <h3>6. Asesmen &amp; Analisis Hasil Belajar Peserta Didik</h3>
 
-          <div className="grid-2">
-            <div className="sub-card">
-              <h4>A. Instrumen Asesmen Formatif Terintegrasi (Di Dalam Slide)</h4>
-              <p>
-                Belajar dari kendala jaringan internet saat menggunakan Quizizz di Siklus 1, pada materi Sistem
-                Komputer saya mengintegrasikan <strong>7 pos pertanyaan asesmen formatif ("Cek Konsep" &
-                "Pertanyaan")</strong> langsung di dalam slide presentasi:
+          <div className="score-highlight">
+            <div>
+              <span className="badge badge-emerald" style={{ marginBottom: '0.35rem' }}>
+                TERVERIFIKASI PADA VIDEO MENIT [01:29:39]
+              </span>
+              <h4>Capaian Rata-Rata Kelas Kuis Evaluasi Akhir (22 Butir Soal)</h4>
+              <p style={{ fontSize: '0.9rem', color: '#065f46' }}>
+                Menguji pemahaman komprehensif 36 siswa kelas X TP 1 atas materi Berpikir Komputasional,
+                Searching, Sorting, Stack (LIFO), dan Queue (FIFO).
               </p>
-              <ol className="styled-list">
-                <li><strong>Slide 3–5 (Identifikasi Konsep):</strong> Menentukan apakah PC Desktop, Smartphone, dan Kalkulator merupakan komputer berdasarkan syarat Input–Process–Output.</li>
-                <li><strong>Slide 14 (Cek Konsep):</strong> Menjelaskan perbedaan mendasar antara <em>Hardware</em> dan <em>Software</em>.</li>
-                <li><strong>Slide 16 (Cek Konsep):</strong> Mengklasifikasikan <em>Smartphone</em> ke dalam jenis komputer yang tepat (Komputer Mikro).</li>
-                <li><strong>Slide 18 (Kuis Identifikasi):</strong> Memilih komponen yang termasuk <em>hardware</em> dari opsi: <em>Mouse, Keyboard, Aplikasi pengolah kata, Video</em>.</li>
-                <li><strong>Slide 61 (Penalaran Sistem):</strong> <em>"Jika tidak ada hardware eksternal, apakah komputer masih tetap bisa berjalan atau digunakan?"</em></li>
-                <li><strong>Slide 64 (Analisis Perangkat Hibrida):</strong> Mengidentifikasi apakah <em>earphone</em> berkabel mikrofon termasuk perangkat <em>Input</em> atau <em>Output</em>.</li>
-                <li><strong>Slide 74 (Evaluasi Lisensi):</strong> Menentukan jenis lisensi <em>software</em> yang dapat diunduh dan digunakan dengan batas waktu tertentu (<em>Shareware</em>).</li>
-              </ol>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <strong>Rata-Rata Kelas: 81%</strong>
+              <p style={{ fontSize: '0.8rem', color: '#047857' }}>Melampaui ambang batas ketuntasan 80%</p>
+            </div>
+          </div>
+
+          <div className="grid-2" style={{ marginTop: '1.25rem' }}>
+            <div className="sub-card">
+              <h4>A. Evaluasi Jujur Kendala Quizizz pada Pertemuan 1 (LK.4 Refleksi 1)</h4>
+              <p>
+                Pada pertemuan pertama (materi dasar Berpikir Komputasional), saya merencanakan asesmen formatif
+                menggunakan platform <strong>Quizizz</strong>. Namun, sebagaimana tercatat secara jujur dalam
+                <code> LK.4.PPLM Refleksi 1</code>:
+              </p>
+              <ul className="styled-list">
+                <li>
+                  Terdapat <strong>kendala teknis pada sebagian perangkat komputer dan jaringan internet</strong>
+                  di ruang laboratorium sehingga sejumlah murid kesulitan mengakses kuis secara serentak.
+                </li>
+                <li>
+                  Pengalaman nyata ini menyadarkan saya pentingnya menyiapkan <strong>strategi asesmen alternatif
+                  (luring/terbimbing)</strong> dan memastikan kesiapan infrastruktur sebelum sesi evaluasi dimulai.
+                </li>
+              </ul>
             </div>
 
             <div className="sub-card">
-              <h4>B. Evaluasi Jujur Kendala Penugasan LKM & Tindak Lanjut</h4>
+              <h4>B. Keberhasilan Latihan Terbimbing &amp; Kuis 22 Soal di Pertemuan Lanjutan</h4>
               <p>
-                Berdasarkan dokumen resmi <code>LK.4.PPLM Refleksi 2</code>, selain tanya jawab formatif di atas,
-                saya memberikan penugasan berupa simulasi mengecek kebenaran informasi di media sosial Instagram.
-              </p>
-              <p style={{ marginTop: '0.5rem' }}>
-                <strong>Analisis Kendala & Hasil:</strong> Pelaksanaan pengerjaan tugas mandiri tersebut
-                <strong>belum berhasil dengan baik</strong>. Penyebab utamanya adalah:
+                Belajar dari kendala Pertemuan 1, pada pertemuan Struktur Data &amp; Algoritma saya menerapkan
+                asesmen berlapis yang menggabungkan:
               </p>
               <ul className="styled-list">
-                <li>Lembar Kerja Murid (LKM) dan petunjuk teknis pengerjaan belum disiapkan secara matang.</li>
-                <li>Topik penugasan (verifikasi berita media sosial) kurang selaras langsung dengan materi inti komponen Sistem Komputer yang baru saja dijelaskan.</li>
-                <li>Akibatnya, banyak murid yang kurang mengerti cara pengerjaannya dan <strong>terdapat beberapa murid yang tidak terlibat mengumpulkan tugasnya</strong>.</li>
+                <li>
+                  <strong>Asesmen Performa Unplugged (<code>[00:23:00]–[00:40:00]</code>):</strong> Observasi
+                  langsung ketepatan 6 barisan siswa saat mengurutkan kartu angka menggunakan algoritma
+                  <em> Bubble Sort</em> dan <em>Selection Sort</em>.
+                </li>
+                <li>
+                  <strong>Latihan Terbimbing Stack &amp; Queue (<code>[00:41:04]–[01:14:00]</code>):</strong>
+                  Penyelesaian soal simulasi <code>push/pop</code> dan <code>enqueue/dequeue</code> di papan tulis
+                  dan buku catatan siswa.
+                </li>
+                <li>
+                  <strong>Kuis Evaluasi Interaktif 22 Soal (<code>[01:14:37]–[01:29:39]</code>):</strong> Seluruh
+                  kelas berhasil menyelesaikan evaluasi dengan <strong>skor rata-rata akurasi 81%</strong>.
+                </li>
               </ul>
-              <p>
-                <em>Sesuai aturan kejujuran akademik, saya tidak membuat tabel nilai atau persentase ketuntasan
-                fiktif untuk tugas yang terkendala ini.</em> Sebaliknya, kegagalan ini menjadi bukti paling
-                otentik pentingnya menyelaraskan LKM dengan tujuan pembelajaran.
-              </p>
             </div>
           </div>
         </section>
       )}
 
-      {/* 7. REFLEKSI & PENGEMBANGAN KOMPETENSI GURU */}
+      {/* 7. REFLEKSI PEMBELAJARAN */}
       {showSection('refleksi') && (
         <section className="card section-block">
           <div className="section-tag">BAGIAN 7</div>
-          <h3>7. Refleksi & Pengembangan Kompetensi Guru (Siklus 2 Menuju Siklus 3 & 4)</h3>
+          <h3>7. Refleksi Pembelajaran &amp; Rencana Tindak Lanjut (LK.4 Siklus 1)</h3>
           <p>
-            Bagian ini menunjukkan bagaimana refleksi dan umpan balik Guru Pamong pada Siklus 2 diolah menjadi
-            perbaikan nyata pada kelas blok berikutnya serta pada Siklus 3 (Analisis Data) dan Siklus 4
-            (Microsoft Word):
+            Berdasarkan dokumen resmi <code>LK.4.PPLM Refleksi 1</code> yang telah disetujui dan disahkan oleh
+            Guru Pamong serta Dosen Pembimbing Lapangan pada 30 Oktober 2026:
           </p>
 
-          <div className="timeline-vertical">
-            <div className="timeline-step">
-              <div className="step-marker">SIKLUS 2</div>
-              <div className="step-content">
-                <h4>Refleksi Sistem Komputer (`LK.4 Refleksi 2`)</h4>
-                <p>
-                  <strong>Temuan & Umpan Balik Guru Pamong:</strong> Penyampaian materi dan apersepsi perangkat
-                  teknologi harian sudah baik, serta ukuran visual slide telah jauh lebih terbaca dibanding Siklus 1.
-                  Namun, LKM yang kurang siap membuat siswa bingung mengerjakan tugas, dan Guru Pamong (Bapak
-                  Juwari, S.T.) menyarankan saya untuk <strong>lebih memahami karakteristik setiap murid agar dapat
-                  menguasai dan mengelola kelas secara lebih efektif</strong>.
-                </p>
-                <p style={{ marginTop: '0.4rem' }}>
-                  <strong>Tindak Lanjut pada Sistem Blok:</strong> Merombak metode yang semula didominasi penjelasan
-                  guru menjadi aktivitas identifikasi komponen komputer secara berkelompok dengan panduan LKM yang
-                  spesifik dan selaras dengan topik Sistem Komputer.
-                </p>
-                <button
-                  className="btn btn-outline btn-sm"
-                  style={{ marginTop: '0.6rem' }}
-                  onClick={() => setPreviewDoc(documentInventory[5])}
-                >
-                  Buka LK.4 Refleksi 2 (PDF)
-                </button>
-              </div>
+          <div className="grid-2" style={{ marginTop: '1rem' }}>
+            <div className="sub-card">
+              <h4>Umpan Balik Guru Pamong (Bapak Juwari, S.T.)</h4>
+              <p>
+                Guru Pamong memberikan apresiasi atas kontekstualisasi materi dengan kehidupan sehari-hari dan
+                profesi kejuruan, namun memberikan catatan perbaikan penting pada aspek media:
+              </p>
+              <blockquote className="academic-quote">
+                "Disarankan agar slide presentasi diperbaiki, khususnya pada ukuran tulisan yang sebaiknya tidak
+                terlalu kecil agar dapat dibaca dengan jelas oleh seluruh murid di kelas."
+              </blockquote>
+              <p style={{ fontSize: '0.9rem' }}>
+                <strong>Makna Reflektif:</strong> Desain media pembelajaran tidak hanya soal kelengkapan isi
+                materi, melainkan juga keterbacaan (<em>readability</em>) dan kenyamanan visual bagi siswa di
+                barisan paling belakang.
+              </p>
             </div>
 
-            <div className="timeline-step">
-              <div className="step-marker">SIKLUS 3</div>
-              <div className="step-content">
-                <h4>Tindak Lanjut pada Pembelajaran Analisis Data (`LK.4 Refleksi 3`)</h4>
-                <p>
-                  <strong>Perbaikan yang Dilakukan:</strong> Belajar dari ketidakselarasan tugas di Siklus 2, pada
-                  Siklus 3 seluruh rangkaian apersepsi, materi, dan contoh visual diselaraskan secara utuh pada
-                  pengumpulan nilai, pengelompokan informasi, serta penyajian data dalam bentuk tabel dan diagram.
-                </p>
-                <p style={{ marginTop: '0.4rem' }}>
-                  <strong>Umpan Balik Guru Pamong & Pembelajaran:</strong> Guru Pamong menilai materi Analisis Data
-                  yang digunakan <strong>sudah baik dan sesuai dengan kebutuhan murid</strong>, namun memberikan
-                  umpan balik agar <strong>sistematika penyusunan dokumen RPP diperbaiki sesuai kaidah yang
-                  berlaku</strong>. Hal ini menyadarkan saya bahwa penguasaan kelas yang baik harus ditopang oleh
-                  skenario RPP yang runtut dari pembukaan hingga penutupan.
-                </p>
-                <button
-                  className="btn btn-outline btn-sm"
-                  style={{ marginTop: '0.6rem' }}
-                  onClick={() => setPreviewDoc(documentInventory[6])}
-                >
-                  Buka LK.4 Refleksi 3 (PDF)
-                </button>
-              </div>
+            <div className="sub-card">
+              <h4>Bukti Tindak Lanjut Nyata Menuju Siklus 2</h4>
+              <ul className="styled-list">
+                <li>
+                  <strong>Transformasi Strategi Mengajar:</strong> Mengubah pendekatan yang semula dominan ceramah
+                  menjadi pembelajaran berbasis aktivitas fisik (<em>roleplay</em> kartu angka dan diskusi
+                  pemecahan masalah) sehingga siswa terjaga dan antusias pada jam siang.
+                </li>
+                <li>
+                  <strong>Perbaikan Tipografi Slide pada Siklus 2:</strong> Masukan tentang ukuran huruf langsung
+                  diterapkan pada pembuatan <strong>91 slide materi Sistem Komputer (Siklus 2)</strong> yang
+                  menggunakan ukuran font besar, kontras tinggi, dan prinsip satu konsep per slide.
+                </li>
+                <li>
+                  <strong>Pemerataan Partisipasi:</strong> Menunjuk perwakilan tiap baris secara bergiliran dan
+                  memfasilitasi pertanyaan kritis siswa (seperti kasus angka kembar pada menit
+                  <code> [00:31:08]</code>).
+                </li>
+              </ul>
             </div>
+          </div>
 
-            <div className="timeline-step">
-              <div className="step-marker">SIKLUS 4</div>
-              <div className="step-content">
-                <h4>Transformasi Menuju Praktik Langsung & Scaffolding pada Microsoft Word (`LK.4 Refleksi 4`)</h4>
-                <p>
-                  <strong>Perubahan Strategi Mengajar:</strong> Menjawab masalah siswa yang cenderung pasif jika
-                  hanya mendengar penjelasan (Siklus 1–3) dan kebingungan saat mengerjakan tugas tanpa panduan
-                  bertahap (Siklus 2), pada Siklus 4 saya menerapkan <strong>demonstrasi langsung yang diikuti
-                  praktik mandiri (<em>hands-on practice</em>)</strong> fitur dasar Microsoft Word (pengaturan
-                  jenis/ukuran huruf, paragraf, dan pembuatan dokumen laporan sederhana).
-                </p>
-                <p style={{ marginTop: '0.4rem' }}>
-                  <strong>Kesadaran Diferensiasi Kemampuan Siswa:</strong> Selama praktik langsung di laboratorium,
-                  terlihat jelas bahwa kecepatan belajar setiap murid berbeda-beda. Oleh karena itu, pengembangan
-                  kompetensi pedagogik saya berfokus pada penyediaan <strong>panduan langkah demi langkah
-                  (<em>step-by-step instruction</em>) dan pendampingan keliling yang merata</strong> agar seluruh
-                  peserta didik dapat menyelesaikan dokumen praktiknya dengan baik.
-                </p>
-                <button
-                  className="btn btn-outline btn-sm"
-                  style={{ marginTop: '0.6rem' }}
-                  onClick={() => setPreviewDoc(documentInventory[7])}
-                >
-                  Buka LK.4 Refleksi 4 (PDF)
-                </button>
-              </div>
-            </div>
+          <div style={{ marginTop: '1.25rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button className="btn btn-primary" onClick={() => setPreviewDoc(documentInventory[4])}>
+              📄 Buka Dokumen Asli LK.4 Refleksi 1 – Siklus 1 (PDF)
+            </button>
+            <button className="btn btn-outline" onClick={() => setPreviewDoc(documentInventory[0])}>
+              📘 Buka Slide Berpikir Komputasional (31 Hal PDF)
+            </button>
+            <Link to="/uas" className="btn btn-secondary">
+              Lanjut ke E-Portfolio 2 (UAS — Sistem Komputer) →
+            </Link>
           </div>
         </section>
       )}
