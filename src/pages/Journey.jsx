@@ -3,74 +3,52 @@ import { documentInventory, growthStages } from '../data/PortofolioData';
 
 export default function Journey({ setPreviewDoc }) {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
-  const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = ['Semua', 'Materi Asli', 'Refleksi Resmi', 'Video Praktik', 'Rekonstruksi & Pengembangan'];
+  const categories = ['Semua', 'Materi Slide', 'Video Praktik', 'Refleksi Resmi'];
 
-  const filteredDocs = documentInventory.filter((doc) => {
-    const matchCategory = selectedCategory === 'Semua' || doc.category === selectedCategory;
-    const q = searchQuery.toLowerCase();
-    const matchQuery =
-      !q ||
-      doc.name.toLowerCase().includes(q) ||
-      doc.cycle.toLowerCase().includes(q) ||
-      doc.content.toLowerCase().includes(q) ||
-      doc.id.toLowerCase().includes(q);
-    return matchCategory && matchQuery;
-  });
+  const filteredDocs = documentInventory.filter(
+    (doc) => selectedCategory === 'Semua' || doc.category === selectedCategory
+  );
 
   return (
     <div className="container">
       <div className="page-header">
         <div className="badge-row">
-          <span className="badge badge-navy">BAGIAN III &amp; IV — SINTESIS PERKEMBANGAN &amp; INVENTARISASI</span>
-          <span className="badge badge-gold">Transparansi Akademik 10 Bukti PPL</span>
+          <span className="badge badge-navy">REKAM JEJAK &amp; ARSIP BUKTI</span>
+          <span className="badge badge-emerald">8 Bukti Terverifikasi</span>
         </div>
-        <h2>Perjalanan Profesional &amp; Inventarisasi Bukti PPG</h2>
-        <p>
-          Rekam jejak kronologis perkembangan kompetensi dari Praktik Asistensi hingga Siklus 4 serta daftar
-          transparansi seluruh dokumen yang digunakan dalam E-Portfolio ini.
-        </p>
+        <h2>Perjalanan PPL &amp; Dokumen Bukti</h2>
+        <p>Ringkasan perkembangan dari tahap Asistensi hingga Siklus 4 beserta dokumen bukti resmi.</p>
       </div>
 
-      {/* MATRIKS PERKEMBANGAN KOMPETENSI 5 TAHAP */}
+      {/* RINGKASAN 5 TAHAP PPL */}
       <section className="card section-block">
-        <span className="section-tag">TRANSFORMASI KOMPETENSI</span>
-        <h3>Matriks Perkembangan Kompetensi Calon Guru (Asistensi s.d. Siklus 4)</h3>
-        <p>
-          Tabel berikut memetakan hubungan kausal antara permasalahan yang ditemukan di kelas, umpan balik Guru
-          Pamong &amp; DPL, kesadaran reflektif yang diperoleh, serta perubahan nyata yang dilakukan dari waktu ke waktu:
-        </p>
-
+        <h3>5 Tahap Perkembangan Praktik Mengajar</h3>
         <div className="table-responsive">
           <table className="comparison-table">
             <thead>
               <tr>
-                <th>Tahapan Praktik</th>
-                <th>Permasalahan yang Ditemukan</th>
-                <th>Umpan Balik Guru Pamong &amp; DPL</th>
-                <th>Kesadaran &amp; Perubahan Nyata yang Dilakukan</th>
-                <th>Bukti Resmi</th>
+                <th>Tahap</th>
+                <th>Topik Pembelajaran</th>
+                <th>Fokus Perbaikan &amp; Capaian Utama</th>
+                <th>Dokumen</th>
               </tr>
             </thead>
             <tbody>
               {growthStages.map((item, idx) => (
                 <tr key={idx}>
                   <td>
-                    <strong>{item.stage}</strong>
-                    <br />
-                    <span className="badge badge-navy" style={{ marginTop: '0.3rem' }}>{item.code}</span>
-                    <div style={{ fontSize: '0.8rem', color: '#475569', marginTop: '0.25rem' }}>{item.topic}</div>
+                    <strong>{item.stage}</strong>{' '}
+                    <span className="badge badge-navy">{item.code}</span>
                   </td>
-                  <td>{item.challenge}</td>
-                  <td>{item.feedback}</td>
-                  <td>{item.action}</td>
+                  <td>{item.topic}</td>
+                  <td>{item.focus}</td>
                   <td>
                     <button
                       className="btn btn-outline btn-sm"
                       onClick={() => setPreviewDoc(documentInventory[item.docIndex])}
                     >
-                      Buka {documentInventory[item.docIndex].id}
+                      Lihat PDF
                     </button>
                   </td>
                 </tr>
@@ -80,16 +58,10 @@ export default function Journey({ setPreviewDoc }) {
         </div>
       </section>
 
-      {/* INVENTARISASI SELURUH DOKUMEN DENGAN FILTER & PENCARIAN */}
+      {/* DAFTAR 8 DOKUMEN ASLI */}
       <section className="card section-block">
-        <span className="section-tag"> PUSAT ARSIP &amp; VERIFIKASI</span>
-        <h3>Tabel Inventarisasi Seluruh Dokumen &amp; Status Kelengkapan Bukti</h3>
-        <p>
-          Daftar lengkap 10 dokumen yang menjadi fondasi penyusunan E-Portfolio ini beserta pembedaan statusnya
-          (Dokumen Asli yang Digunakan, Dokumen Refleksi Resmi, Rekaman Video, dan Dokumen Rekonstruksi/Pengembangan):
-        </p>
-
-        <div className="filter-bar">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1rem' }}>
+          <h3 style={{ margin: 0 }}>Arsip Dokumen &amp; Video Praktik</h3>
           <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
             {categories.map((cat) => (
               <button
@@ -101,70 +73,29 @@ export default function Journey({ setPreviewDoc }) {
               </button>
             ))}
           </div>
-
-          <input
-            type="search"
-            className="search-input"
-            placeholder="Cari kode, topik, atau nama dokumen..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Cari dokumen bukti"
-          />
         </div>
 
-        <div className="table-responsive">
-          <table className="comparison-table">
-            <thead>
-              <tr>
-                <th>Kode</th>
-                <th>Nama Dokumen / Bukti</th>
-                <th>Kategori &amp; Jenis Bukti</th>
-                <th>Siklus / Topik</th>
-                <th>Kegunaan</th>
-                <th>Status &amp; Catatan Akademik</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDocs.map((doc) => (
-                <tr key={doc.id}>
-                  <td><strong>{doc.id}</strong></td>
-                  <td>
-                    <strong>{doc.name}</strong>
-                    <div style={{ fontSize: '0.8rem', color: '#475569', marginTop: '0.25rem' }}>
-                      {doc.content}
-                    </div>
-                  </td>
-                  <td>
-                    <span className="badge badge-navy">{doc.category}</span>
-                    <div style={{ fontSize: '0.78rem', marginTop: '0.25rem', color: '#334155' }}>{doc.type}</div>
-                  </td>
-                  <td>
-                    {doc.cycle}
-                    {doc.pages && (
-                      <div>
-                        <span className="badge badge-gold" style={{ marginTop: '0.25rem' }}>{doc.pages}</span>
-                      </div>
-                    )}
-                  </td>
-                  <td>{doc.usage}</td>
-                  <td>
-                    <strong style={{ color: '#047857' }}>{doc.status}</strong>
-                    <br />
-                    <small style={{ color: '#475569' }}>{doc.notes}</small>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => setPreviewDoc(doc)}
-                    >
-                      🔍 Pratinjau
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid-2">
+          {filteredDocs.map((doc) => (
+            <div key={doc.id} className="sub-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <div className="badge-row" style={{ marginBottom: '0.45rem', justifyContent: 'space-between' }}>
+                  <span className="badge badge-navy">{doc.cycle}</span>
+                  <span className="badge badge-emerald">{doc.pages}</span>
+                </div>
+                <h4>{doc.name}</h4>
+                <p style={{ fontSize: '0.88rem', color: '#475569', margin: '0.35rem 0 0.85rem' }}>
+                  {doc.content}
+                </p>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#047857' }}>✓ {doc.status}</span>
+                <button className="btn btn-primary btn-sm" onClick={() => setPreviewDoc(doc)}>
+                  🔍 Buka Pratinjau
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
