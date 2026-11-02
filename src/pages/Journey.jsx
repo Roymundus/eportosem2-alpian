@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { documentInventory, growthStages } from '../data/PortofolioData';
+import { FaCheck, FaMagnifyingGlass } from 'react-icons/fa6';
 
 export default function Journey({ setPreviewDoc }) {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
 
-  const categories = ['Semua', 'Materi Slide', 'Video Praktik', 'Refleksi Resmi'];
+  const categories = ['Semua', 'Materi Slide', 'Video Praktik', 'Refleksi Resmi', 'Perangkat Ajar'];
 
   const filteredDocs = documentInventory.filter(
     (doc) => selectedCategory === 'Semua' || doc.category === selectedCategory
@@ -89,9 +90,9 @@ export default function Journey({ setPreviewDoc }) {
                 </p>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#047857' }}>✓ {doc.status}</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#047857' }}><FaCheck /> {doc.status}</span>
                 <button className="btn btn-primary btn-sm" onClick={() => setPreviewDoc(doc)}>
-                  🔍 Buka Pratinjau
+                  <FaMagnifyingGlass /> Buka Pratinjau
                 </button>
               </div>
             </div>

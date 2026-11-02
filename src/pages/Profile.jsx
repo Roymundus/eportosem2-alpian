@@ -1,5 +1,6 @@
 import React from 'react';
 import { teacherIdentity } from '../data/PortofolioData';
+import { FaBuildingColumns, FaGraduationCap, FaSchool } from 'react-icons/fa6';
 
 export default function Profile() {
   return (
@@ -19,7 +20,7 @@ export default function Profile() {
       <section className="card section-block">
         <div className="grid-2">
           <div className="sub-card">
-            <h4>🎓 Data Akademik</h4>
+            <h4><FaGraduationCap /> Data Akademik</h4>
             <table className="mini-table">
               <tbody>
                 <tr><td><strong>Nama</strong></td><td>{teacherIdentity.name}</td></tr>
@@ -31,7 +32,7 @@ export default function Profile() {
           </div>
 
           <div className="sub-card">
-            <h4>🏫 Lokasi &amp; Supervisi PPL</h4>
+            <h4><FaSchool /> Lokasi &amp; Supervisi PPL</h4>
             <table className="mini-table">
               <tbody>
                 <tr><td><strong>Sekolah</strong></td><td>{teacherIdentity.school}</td></tr>
@@ -79,7 +80,7 @@ export default function Profile() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.75rem' }}>
               {teacherIdentity.interests.map((item, idx) => (
                 <div key={idx} className="sub-card">
-                  <h4>{item.icon} {item.title}</h4>
+                  <h4><FaBuildingColumns /> {item.title}</h4>
                   <p style={{ fontSize: '0.9rem' }}>{item.desc}</p>
                 </div>
               ))}

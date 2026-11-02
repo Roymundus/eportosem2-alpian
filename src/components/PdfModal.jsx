@@ -1,9 +1,11 @@
 import React from 'react';
+import { FaArrowUpRightFromSquare, FaXmark } from 'react-icons/fa6';
 
 export default function PdfModal({ doc, onClose }) {
   if (!doc) return null;
 
-  const isPdfFile = doc.fileUrl && doc.fileUrl.endsWith('.pdf');
+  const previewUrl = doc.previewUrl || (doc.fileUrl && doc.fileUrl.endsWith('.pdf') ? doc.fileUrl : null);
+  const isPdfFile = Boolean(previewUrl);
   const isYoutube = doc.fileUrl && doc.fileUrl.includes('youtu');
 
   return (
@@ -19,7 +21,7 @@ export default function PdfModal({ doc, onClose }) {
             <h3>{doc.name}</h3>
           </div>
           <button className="close-btn" onClick={onClose} aria-label="Tutup modal">
-            ✕ Tutup
+            <FaXmark /> Tutup
           </button>
         </div>
 
@@ -38,7 +40,7 @@ export default function PdfModal({ doc, onClose }) {
           {isPdfFile && (
             <div className="pdf-preview-wrapper">
               <iframe
-                src={doc.fileUrl}
+                src={previewUrl}
                 title={doc.name}
                 width="100%"
                 height="440px"
@@ -65,7 +67,7 @@ export default function PdfModal({ doc, onClose }) {
               rel="noopener noreferrer"
               className="btn btn-primary"
             >
-              Buka Dokumen Asli ↗
+              <FaArrowUpRightFromSquare /> Buka Dokumen Asli
             </a>
             <button className="btn btn-outline" onClick={onClose}>
               Tutup

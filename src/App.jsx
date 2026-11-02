@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import PortofolioUTS from './pages/PortofolioUTS';
 import PortofolioUAS from './pages/PortofolioUAS';
+import NonMengajar from './pages/NonMengajar';
 import Journey from './pages/Journey';
 import './App.css';
 
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/profil" element={<Profile setPreviewDoc={setPreviewDoc} />} />
             <Route path="/uts" element={<PortofolioUTS setPreviewDoc={setPreviewDoc} />} />
             <Route path="/uas" element={<PortofolioUAS setPreviewDoc={setPreviewDoc} />} />
+            <Route path="/non-mengajar" element={<NonMengajar />} />
             <Route path="/perjalanan" element={<Journey setPreviewDoc={setPreviewDoc} />} />
           </Routes>
         </main>

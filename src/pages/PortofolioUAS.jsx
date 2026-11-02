@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { documentInventory, uasPhotoGallery } from '../data/PortofolioData';
+import React, { useEffect, useState } from 'react';
+import { documentInventory, studentAssignments, uasPhotoGallery } from '../data/PortofolioData';
+import { FaBook, FaFilePdf, FaFolderOpen, FaLaptopCode } from 'react-icons/fa6';
 
 export default function PortofolioUAS({ setPreviewDoc }) {
   const [uasTab, setUasTab] = useState('semua');
   const [cliInput, setCliInput] = useState('');
+  const [activePhoto, setActivePhoto] = useState(0);
   const [currentDir, setCurrentDir] = useState('C:\\Users\\alpia');
   const [folders, setFolders] = useState(['Documents', 'Praktik_TP1', 'CNC_Program']);
   const [cliHistory, setCliHistory] = useState([
@@ -16,10 +18,23 @@ export default function PortofolioUAS({ setPreviewDoc }) {
     { id: 'perencanaan', label: '1. Perencanaan' },
     { id: 'materi', label: '2. Materi & Media' },
     { id: 'dokumentasi', label: '3. Dokumentasi Foto' },
-    { id: 'evaluasi', label: '4. Asesmen & Refleksi' }
+    { id: 'evaluasi', label: '4. Asesmen & Refleksi' },
+    { id: 'tugas-siswa', label: '5. Tugas Siswa' }
   ];
 
   const showSection = (id) => uasTab === 'semua' || uasTab === id;
+
+  useEffect(() => {
+    if (uasPhotoGallery.length < 2) return undefined;
+    const timer = window.setInterval(() => {
+      setActivePhoto((current) => (current + 1) % uasPhotoGallery.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const changePhoto = (offset) => {
+    setActivePhoto((current) => (current + offset + uasPhotoGallery.length) % uasPhotoGallery.length);
+  };
 
   const handleCliCommand = (cmdRaw) => {
     const cmd = cmdRaw.trim();
@@ -76,6 +91,9 @@ export default function PortofolioUAS({ setPreviewDoc }) {
         </div>
         <h2>Sistem Komputer &amp; Pengembangan Pembelajaran</h2>
         <p>SMK Negeri 2 Yogyakarta • Kelas X TP 1 • Materi Utama: Sistem Komputer (91 Slide PDF)</p>
+        <button className="btn btn-outline btn-sm" onClick={() => setPreviewDoc(documentInventory[9])}>
+          Buka RPP E-Portfolio 2 (DOCX)
+        </button>
       </div>
 
       <div className="sub-nav">
@@ -127,11 +145,11 @@ export default function PortofolioUAS({ setPreviewDoc }) {
               <h3 style={{ margin: 0 }}>Pokok Materi Sistem Komputer (91 Slide PDF) &amp; Simulasi CLI</h3>
             </div>
             <button className="btn btn-primary btn-sm" onClick={() => setPreviewDoc(documentInventory[2])}>
-              📙 Buka Slide Sistem Komputer (91 Hal PDF)
+              <FaFilePdf /> Buka Slide Sistem Komputer (91 Hal PDF)
             </button>
           </div>
 
-          <div className="grid-2">
+          <div className="grid-2 photo-gallery-grid">
             <div className="sub-card">
               <h4>1. Konsep &amp; Jenis Komputer (Slide 1–16)</h4>
               <p style={{ fontSize: '0.9rem' }}>
@@ -160,7 +178,7 @@ export default function PortofolioUAS({ setPreviewDoc }) {
 
           <div className="sim-box">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-              <h4>💻 Simulator Perintah Dasar CLI (Slide 89)</h4>
+              <h4><FaLaptopCode /> Simulator Perintah Dasar CLI (Slide 89)</h4>
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 <button className="btn btn-sm btn-outline" onClick={() => handleCliCommand('dir')}>dir</button>
                 <button className="btn btn-sm btn-outline" onClick={() => handleCliCommand('mkdir Tugas_TP1')}>mkdir Tugas_TP1</button>
@@ -202,32 +220,50 @@ export default function PortofolioUAS({ setPreviewDoc }) {
       {showSection('dokumentasi') && (
         <section className="card section-block">
           <span className="section-tag">3. DOKUMENTASI PEMBELAJARAN</span>
-          <h3>Galeri Dokumentasi Kegiatan Kelas X TP 1</h3>
-          <p style={{ fontSize: '0.9rem', color: '#475569', marginBottom: '1rem' }}>
-            Dokumentasi rangkaian kegiatan pembelajaran Sistem Komputer mulai dari pembukaan, eksplorasi materi,
-            praktikum Command Prompt, hingga evaluasi penutup:
-          </p>
+          <h3>Galeri Dokumentasi Mengajar Kelas X TP 1</h3>
 
-          <div className="grid-2">
-            {uasPhotoGallery.map((photo) => (
-              <div key={photo.id} className="photo-card">
-                <div className="photo-frame">
-                  {photo.imageUrl ? (
-                    <img src={photo.imageUrl} alt={photo.title} />
-                  ) : (
-                    <>
-                      <div className="photo-placeholder-icon">📷</div>
-                      <span className="badge badge-white">{photo.stage}</span>
-                    </>
-                  )}
-                </div>
-                <div className="photo-body">
-                  <span className="badge badge-navy" style={{ marginBottom: '0.35rem' }}>{photo.stage}</span>
-                  <h4>{photo.title}</h4>
-                  <p style={{ fontSize: '0.86rem', color: '#475569' }}>{photo.caption}</p>
-                </div>
+          <div className="teaching-gallery">
+            <div className="teaching-gallery-frame">
+              <img
+                src={uasPhotoGallery[activePhoto].imageUrl}
+                alt={uasPhotoGallery[activePhoto].title}
+              />
+              <button
+                type="button"
+                className="gallery-arrow gallery-arrow-prev"
+                onClick={() => changePhoto(-1)}
+                aria-label="Foto sebelumnya"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="gallery-arrow gallery-arrow-next"
+                onClick={() => changePhoto(1)}
+                aria-label="Foto berikutnya"
+              >
+                ›
+              </button>
+            </div>
+            <div className="teaching-gallery-caption">
+              <div>
+                <span className="badge badge-navy">{uasPhotoGallery[activePhoto].stage}</span>
+                <h4>{uasPhotoGallery[activePhoto].title}</h4>
+                <p>{uasPhotoGallery[activePhoto].caption}</p>
               </div>
-            ))}
+              <div className="gallery-dots" aria-label="Pilih foto dokumentasi">
+                {uasPhotoGallery.map((photo, index) => (
+                  <button
+                    key={photo.id}
+                    type="button"
+                    className={index === activePhoto ? 'gallery-dot active' : 'gallery-dot'}
+                    onClick={() => setActivePhoto(index)}
+                    aria-label={`Tampilkan foto ${index + 1}`}
+                    aria-current={index === activePhoto ? 'true' : undefined}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </section>
       )}
@@ -245,7 +281,7 @@ export default function PortofolioUAS({ setPreviewDoc }) {
             </p>
           </div>
 
-          <div className="timeline-vertical">
+          <div className="grid-3">
             <div className="timeline-step">
               <div className="step-marker">SIKLUS 2</div>
               <div>
@@ -254,7 +290,7 @@ export default function PortofolioUAS({ setPreviewDoc }) {
                   Penyampaian materi dengan ukuran teks slide yang jelas dan contoh perangkat harian memudahkan pemahaman murid, disertai penguatan panduan kerja kelompok dan manajemen kelas.
                 </p>
                 <button className="btn btn-outline btn-sm" style={{ marginTop: '0.5rem' }} onClick={() => setPreviewDoc(documentInventory[5])}>
-                  📄 Buka LK.4 Refleksi 2 (PDF)
+                  <FaFilePdf /> Buka LK.4 Refleksi 2 (PDF)
                 </button>
               </div>
             </div>
@@ -267,7 +303,7 @@ export default function PortofolioUAS({ setPreviewDoc }) {
                   Materi pengolahan nilai ke dalam tabel dan diagram relevan dengan kebutuhan murid, diikuti penataan sistematika penyusunan dokumen RPP agar alur diskusi semakin runtut.
                 </p>
                 <button className="btn btn-outline btn-sm" style={{ marginTop: '0.5rem' }} onClick={() => setPreviewDoc(documentInventory[6])}>
-                  📄 Buka LK.4 Refleksi 3 (PDF)
+                  <FaFilePdf /> Buka LK.4 Refleksi 3 (PDF)
                 </button>
               </div>
             </div>
@@ -280,10 +316,48 @@ export default function PortofolioUAS({ setPreviewDoc }) {
                   Menerapkan demonstrasi langsung diikuti praktik mandiri pembuatan dokumen laporan dengan panduan langkah demi langkah (<em>step-by-step</em>) dan pendampingan merata.
                 </p>
                 <button className="btn btn-outline btn-sm" style={{ marginTop: '0.5rem' }} onClick={() => setPreviewDoc(documentInventory[7])}>
-                  📄 Buka LK.4 Refleksi 4 (PDF)
+                  <FaFilePdf /> Buka LK.4 Refleksi 4 (PDF)
                 </button>
               </div>
             </div>
+          </div>
+        </section>
+      )}
+
+      {showSection('tugas-siswa') && (
+        <section className="card section-block">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div>
+              <span className="section-tag">5. CONTOH TUGAS SISWA</span>
+              <h3>Contoh Tugas Adek Bagus (Presensi 3) — X TP 1</h3>
+            </div>
+            <a
+              href="https://drive.google.com/drive/folders/1Zp8M0RHSQI_zlqriCMjoeBHzeS-Q_b5L"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm"
+            >
+              <FaFolderOpen /> Buka Folder Tugas Siswa
+            </a>
+          </div>
+          <p style={{ fontSize: '0.9rem', color: '#475569', marginBottom: '1rem' }}>
+            Tiga contoh tugas dilampirkan di website. Arsip tugas lainnya dapat diakses melalui folder Google Drive.
+          </p>
+
+          <div className="grid-3">
+            {studentAssignments.map((assignment) => (
+              <div key={assignment.id} className="sub-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <span className="badge badge-navy">{assignment.type}</span>
+                  <h4 style={{ marginTop: '0.55rem' }}>{assignment.name}</h4>
+                  <p style={{ fontSize: '0.86rem', color: '#475569' }}>{assignment.content}</p>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b' }}>{assignment.student}</p>
+                </div>
+                <button className="btn btn-outline btn-sm" onClick={() => setPreviewDoc(assignment)}>
+                  <FaBook /> Buka Contoh Tugas
+                </button>
+              </div>
+            ))}
           </div>
         </section>
       )}

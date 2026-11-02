@@ -24,17 +24,14 @@ export const teacherIdentity = {
   ],
   interests: [
     {
-      icon: "🧠",
       title: "Berpikir Komputasional & Algoritma",
       desc: "Pengembangan logika pemecahan masalah, struktur data, dan algoritma melalui simulasi visual dan roleplay."
     },
     {
-      icon: "📊",
       title: "Analisis & Visualisasi Data",
       desc: "Pengolahan data nilai dan penyajian informasi secara sistematis melalui tabel serta diagram."
     },
     {
-      icon: "⚙️",
       title: "Sistem Komputer & Otomasi",
       desc: "Penerapan konsep hardware, software, dan antarmuka CLI/GUI sebagai fondasi sistem kontrol modern."
     }
@@ -66,36 +63,104 @@ export const keyMetrics = [
   { value: "8 Arsip", label: "Dokumen & Bukti", detail: "Materi, Video, & Lembar Refleksi" }
 ];
 
-// Silakan isi `imageUrl` dengan path foto Anda di folder `public/photos/...`
-// contoh: imageUrl: "/photos/uas-pembukaan.jpg"
+// Foto dokumentasi pembelajaran tersimpan di folder public/foto.
 export const uasPhotoGallery = [
   {
     id: "FOTO-01",
     stage: "1. Kegiatan Pembukaan & Apersepsi",
     title: "Berdoa, Presensi, dan Apersepsi Perangkat Harian",
     caption: "Guru membuka pembelajaran di kelas X TP 1 dan memantik diskusi awal mengenai perangkat komputer serta smartphone yang digunakan siswa sehari-hari.",
-    imageUrl: ""
+    imageUrl: "/foto/dokumentasi%20kegaitan%20mengajar%20(1).jpeg"
   },
   {
     id: "FOTO-02",
     stage: "2. Kegiatan Inti — Eksplorasi Materi",
     title: "Penjelasan Komponen Hardware, Software, dan Brainware",
     caption: "Penyampaian materi Sistem Komputer menggunakan slide visual berhuruf jelas disertai sesi tanya jawab interaktif Cek Konsep.",
-    imageUrl: ""
+    imageUrl: "/foto/dokumentasi%20kegaitan%20mengajar%20(2).jpeg"
   },
   {
     id: "FOTO-03",
     stage: "3. Kegiatan Inti — Praktikum & Diskusi",
     title: "Demonstrasi Command Prompt (CLI) & Kerja Kelompok",
     caption: "Siswa mengamati demonstrasi perintah dasar direktori (dir, mkdir, cd) pada terminal Command Prompt dan mengerjakan lembar kerja.",
-    imageUrl: ""
+    imageUrl: "/foto/dokumentasi%20kegaitan%20mengajar%20(3).jpeg"
   },
   {
     id: "FOTO-04",
     stage: "4. Kegiatan Penutup & Refleksi",
     title: "Penyimpulan Materi dan Evaluasi Pembelajaran",
     caption: "Guru bersama peserta didik menyimpulkan interaksi Input-Process-Output pada sistem komputer dan menutup kelas dengan doa.",
-    imageUrl: ""
+    imageUrl: "/foto/dokumentasi%20kegaitan%20mengajar%20(4).jpeg"
+  }
+];
+
+export const nonTeachingActivities = [
+  {
+    id: "NON-MENGAJAR-01",
+    title: "Sosialisasi Penerapan Industrial Basic Mentality (IBM)",
+    caption: "Dokumentasi kegiatan non-mengajar berupa sosialisasi penerapan Industrial Basic Mentality (IBM) di SMK Negeri 2 Yogyakarta.",
+    imageUrl: "/foto/Kegiatan non-Mengajar (Sosialisasi penerapan Industrial Basic Mentality (IBM) di SMK Negeri 2 Yogyakarta).jpeg"
+  },
+  {
+    id: "NON-MENGAJAR-02",
+    title: "Rabu Bugar",
+    caption: "Partisipasi dalam kegiatan Rabu Bugar berupa senam yang dilaksanakan setiap dua minggu sekali.",
+    imageUrl: "/foto/Kegiatan Rabu Bugar, senam setiap 2 minggu sekali.jpeg"
+  },
+  {
+    id: "NON-MENGAJAR-03",
+    title: "Gelar Karya dan Pentas Seni Jurusan Mekatronika, Teknik Audio Visual",
+    caption: "Partisipasi pada kegiatan Gelar Karya dan Pentas Seni Jurusan Mekatronika dan Teknik Audio Visual.",
+    imageUrl: "/foto/Partisipasi pada kegiatan Gelar Karya dan Pentas Seni Jurusan Mekatronika, Teknik Audio Visual dan.jpg"
+  },
+  {
+    id: "NON-MENGAJAR-04",
+    title: "Gelar Karya dan Pentas Seni — Dokumentasi 1",
+    caption: "Dokumentasi partisipasi pada kegiatan Gelar Karya dan Pentas Seni.",
+    imageUrl: "/foto/Partisipasi pada kegiatan Gelar Karya dan Pentas Seni Jurusan Mekatronika, Teknik Audio Visual dan (1).JPG"
+  },
+  {
+    id: "NON-MENGAJAR-05",
+    title: "Gelar Karya dan Pentas Seni — Dokumentasi 2",
+    caption: "Dokumentasi partisipasi pada kegiatan Gelar Karya dan Pentas Seni.",
+    imageUrl: "/foto/Partisipasi pada kegiatan Gelar Karya dan Pentas Seni Jurusan Mekatronika, Teknik Audio Visual dan (2).JPG"
+  },
+  {
+    id: "NON-MENGAJAR-06",
+    title: "Gelar Karya dan Pentas Seni — Dokumentasi 3",
+    caption: "Dokumentasi partisipasi pada kegiatan Gelar Karya dan Pentas Seni.",
+    imageUrl: "/foto/Partisipasi pada kegiatan Gelar Karya dan Pentas Seni Jurusan Mekatronika, Teknik Audio Visual dan (3).JPG"
+  }
+];
+
+export const studentAssignments = [
+  {
+    id: "TUGAS-SISWA-01",
+    name: "Tugas — KKA MISI 1",
+    type: "Contoh Tugas Word",
+    student: "Adek Bagus Ramadhan (Presensi 3) — X TP 1",
+    content: "Contoh tugas Word siswa yang dilampirkan dalam E-Portfolio.",
+    fileUrl: "/docs/tugas%20siswa/KKA%20MISI%201.pdf",
+    previewUrl: "/docs/tugas%20siswa/KKA%20MISI%201.pdf"
+  },
+  {
+    id: "TUGAS-SISWA-02",
+    name: "Tugas Berpikir Komputasional — Algoritma dan Struktur Data",
+    type: "Contoh Tugas Berpikir Komputasional",
+    student: "Adek Bagus Ramadhan (Presensi 3) — X TP 1",
+    content: "LKPD tentang Search Algorithm, Sort Algorithm, Stack, dan Queue.",
+    fileUrl: "/docs/tugas%20siswa/LKPD%20Algoritma%20dan%20Struktur%20Data.docx",
+    previewUrl: "/docs/tugas%20siswa/LKPD%20Algoritma%20dan%20Struktur%20Data.pdf"
+  },
+  {
+    id: "TUGAS-SISWA-03",
+    name: "Tugas Sistem Komputer",
+    type: "Contoh Tugas Sistem Komputer",
+    student: "Adek Bagus Ramadhan (Presensi 3) — X TP 1",
+    content: "LKM mengenal dan menganalisis Sistem Komputer.",
+    fileUrl: "/docs/tugas%20siswa/LKM%20Adek%20Bagus%20R.(3),%20Akmal%20Fauz(4)%E2%80%93%20Sistem%20Komputer%20(2).docx",
+    previewUrl: "/docs/tugas%20siswa/LKM%20Adek%20Bagus%20R.(3),%20Akmal%20Fauz(4)%E2%80%93%20Sistem%20Komputer%20(2).pdf"
   }
 ];
 
@@ -235,6 +300,57 @@ export const documentInventory = [
     usage: "Refleksi Pengembangan Siklus 4",
     status: "Disahkan Resmi",
     fileUrl: "/docs/LK4_Refleksi_1_Siklus_4.pdf"
+  },
+  {
+    id: "DOC-09",
+    category: "Perangkat Ajar",
+    name: "RPP UTS Struktur Data dan Algoritma.docx",
+    type: "Rencana Pelaksanaan Pembelajaran",
+    cycle: "Siklus 1 (UTS)",
+    pages: "Dokumen Word",
+    content: "Rencana Pelaksanaan Pembelajaran untuk materi Struktur Data dan Algoritma pada E-Portfolio UTS.",
+    highlights: [
+      "Perencanaan pembelajaran Struktur Data dan Algoritma.",
+      "Rangkaian kegiatan pembelajaran dan asesmen untuk Siklus 1 (UTS)."
+    ],
+    usage: "Perangkat Ajar E-Portfolio UTS",
+    status: "Dokumen Lengkap",
+    fileUrl: "/docs/RPP_UTS_Struktur_Data_dan_Algoritma.docx",
+    previewUrl: "/docs/RPP_UTS_Struktur_Data_dan_Algoritma.pdf"
+  },
+  {
+    id: "DOC-10",
+    category: "Perangkat Ajar",
+    name: "RPP E-Portfolio 2 Pengembangan Struktur Data dan Algoritma.docx",
+    type: "Rencana Pelaksanaan Pembelajaran",
+    cycle: "Siklus 2–4 (UAS)",
+    pages: "Dokumen Word",
+    content: "Rencana Pelaksanaan Pembelajaran untuk pengembangan materi Struktur Data dan Algoritma pada E-Portfolio 2.",
+    highlights: [
+      "Perencanaan pengembangan pembelajaran Struktur Data dan Algoritma.",
+      "Rangkaian kegiatan pembelajaran dan asesmen untuk Siklus 2–4 (UAS)."
+    ],
+    usage: "Perangkat Ajar E-Portfolio UAS",
+    status: "Dokumen Lengkap",
+    fileUrl: "/docs/RPP_EPortfolio2_Pengembangan_Struktur_Data_dan_Algoritma.docx",
+    previewUrl: "/docs/RPP_EPortfolio2_Pengembangan_Struktur_Data_dan_Algoritma.pdf"
+  },
+  {
+    id: "DOC-11",
+    category: "Perangkat Ajar",
+    name: "Salinan Form RPP Deep Learning SMKN 2 Yogyakarta.docx",
+    type: "Rencana Pelaksanaan Pembelajaran",
+    cycle: "Dokumen Pendukung",
+    pages: "Dokumen Word",
+    content: "Dokumen pendukung format RPP Deep Learning SMKN 2 Yogyakarta.",
+    highlights: [
+      "Format RPP pembelajaran mendalam.",
+      "Dokumen pendukung perencanaan pembelajaran."
+    ],
+    usage: "Dokumen Pendukung E-Portfolio",
+    status: "Dokumen Lengkap",
+    fileUrl: "/docs/Salinan%206.%20FORM%20RPP-DEEP%20LEARNING%20SMKN%202%20YK%20TA.2627.docx",
+    previewUrl: "/docs/Salinan%206.%20FORM%20RPP-DEEP%20LEARNING%20SMKN%202%20YK%20TA.2627.pdf"
   }
 ];
 
