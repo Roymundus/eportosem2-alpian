@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { biodata } from '../data/biodata';
-import { FaBookOpen, FaHouse, FaRoute, FaUsers } from 'react-icons/fa6';
+import { FaBookOpen, FaHouse, FaUsers } from 'react-icons/fa6';
 import { FaUserGraduate } from 'react-icons/fa';
 
 const links = [
@@ -9,8 +9,7 @@ const links = [
   { to: '/profil', icon: FaUserGraduate, label: 'Profil Guru' },
   { to: '/uts', icon: FaBookOpen, label: 'E-Portfolio UTS' },
   { to: '/uas', icon: FaBookOpen, label: 'E-Portfolio UAS' },
-  { to: '/non-mengajar', icon: FaUsers, label: 'Kegiatan non-Mengajar' },
-  { to: '/perjalanan', icon: FaRoute, label: 'Perjalanan & Bukti PPG' }
+  { to: '/non-mengajar', icon: FaUsers, label: 'Kegiatan non-Mengajar' }
 ];
 
 export default function Navbar() {

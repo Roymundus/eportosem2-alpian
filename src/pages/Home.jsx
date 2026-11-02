@@ -112,12 +112,11 @@ export default function Home() {
       <section className="seminar-cta">
         <div>
           <span className="heading-kicker">PORTOFOLIO PEMBELAJARAN</span>
-          <h2>Jelajahi perjalanan PPG saya</h2>
-          <p>Lihat dokumentasi praktik mengajar, refleksi, perangkat ajar, dan bukti pembelajaran Informatika.</p>
+          <h2>Jelajahi portofolio pembelajaran saya</h2>
+          <p>Lihat refleksi dan perangkat pembelajaran Informatika dari kegiatan PPG.</p>
         </div>
         <div className="cta-actions">
           <button className="seminar-button seminar-button-primary" onClick={() => navigate('/uts')}>Refleksi &amp; Portofolio UTS</button>
-          <button className="seminar-button seminar-button-light" onClick={() => navigate('/perjalanan')}>Lihat Perjalanan PPG</button>
         </div>
       </section>
     </div>

@@ -20,7 +20,6 @@ export default function Footer() {
             <li><Link to="/">Beranda (/)</Link></li>
             <li><Link to="/uts">E-Portfolio 1 – UTS (/uts)</Link></li>
             <li><Link to="/uas">E-Portfolio 2 – UAS (/uas)</Link></li>
-            <li><Link to="/perjalanan">Bukti &amp; Perjalanan (/perjalanan)</Link></li>
           </ul>
         </div>
 
