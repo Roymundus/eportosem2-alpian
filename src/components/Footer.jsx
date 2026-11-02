@@ -7,41 +7,27 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <h3>E-Portfolio PPG Calon Guru Informatika</h3>
+          <h3>E-Portfolio PPG Informatika</h3>
           <p>
-            Dokumentasi autentik perencanaan, pelaksanaan, asesmen, analisis hasil belajar, dan
-            refleksi pembelajaran berkelanjutan selama Praktik Pengalaman Lapangan (PPL) di{' '}
-            <strong>{teacherIdentity.school}</strong>.
-          </p>
-          <p style={{ marginTop: '0.85rem', color: '#f8fafc' }}>
-            Disusun oleh: <strong>{teacherIdentity.name}</strong> (NIM: {teacherIdentity.nim})
+            Dokumentasi Praktik Pengalaman Lapangan (PPL) di <strong>{teacherIdentity.school}</strong> oleh{' '}
+            <strong>{teacherIdentity.name}</strong> (NIM: {teacherIdentity.nim}).
           </p>
         </div>
 
         <div>
-          <h4>Navigasi Cepat &amp; Tautan Pengumpulan</h4>
+          <h4>Menu Cepat</h4>
           <ul className="footer-links">
-            <li><Link to="/">1. Halaman Utama Website (/)</Link></li>
-            <li><Link to="/profil">2. Profil &amp; Kompetensi Guru (/profil)</Link></li>
-            <li><Link to="/uts">3. E-Portfolio 1 – UTS Siklus 1 (/uts)</Link></li>
-            <li><Link to="/uas">4. E-Portfolio 2 – UAS Siklus 2–4 (/uas)</Link></li>
-            <li><Link to="/perjalanan">5. Matriks Perjalanan &amp; Bukti PPG (/perjalanan)</Link></li>
+            <li><Link to="/">Beranda (/)</Link></li>
+            <li><Link to="/uts">E-Portfolio 1 – UTS (/uts)</Link></li>
+            <li><Link to="/uas">E-Portfolio 2 – UAS (/uas)</Link></li>
+            <li><Link to="/perjalanan">Bukti &amp; Perjalanan (/perjalanan)</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4>Supervisi Akademik PPL</h4>
-          <p>
-            <strong>Dosen Pembimbing Lapangan (DPL):</strong><br />
-            {teacherIdentity.supervisorLecturer}
-          </p>
-          <p style={{ marginTop: '0.65rem' }}>
-            <strong>Guru Pamong:</strong><br />
-            {teacherIdentity.mentorTeacher}
-          </p>
-          <p style={{ marginTop: '0.65rem', fontSize: '0.8rem', color: '#94a3b8' }}>
-            Disahkan pada {teacherIdentity.approvalDate} • {teacherIdentity.university}
-          </p>
+          <h4>Supervisi PPL</h4>
+          <p><strong>DPL:</strong> {teacherIdentity.supervisorLecturer}</p>
+          <p style={{ marginTop: '0.35rem' }}><strong>Guru Pamong:</strong> {teacherIdentity.mentorTeacher}</p>
         </div>
       </div>
     </footer>
