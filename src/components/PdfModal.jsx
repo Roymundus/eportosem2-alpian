@@ -11,10 +11,10 @@ export default function PdfModal({ doc, onClose }) {
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div>
-            <div className="badge-row" style={{ marginBottom: '0.4rem' }}>
+            <div className="badge-row" style={{ marginBottom: '0.35rem' }}>
               <span className="badge badge-navy">{doc.id}</span>
-              <span className="badge badge-gold">{doc.type}</span>
-              {doc.pages && <span className="badge badge-emerald">{doc.pages}</span>}
+              <span className="badge badge-gold">{doc.cycle}</span>
+              <span className="badge badge-emerald">{doc.pages}</span>
             </div>
             <h3>{doc.name}</h3>
           </div>
@@ -24,29 +24,14 @@ export default function PdfModal({ doc, onClose }) {
         </div>
 
         <div className="modal-body">
-          <div className="grid-2" style={{ marginBottom: '1.1rem' }}>
-            <div className="sub-card">
-              <p><strong>Siklus / Tahapan:</strong> {doc.cycle}</p>
-              <p style={{ marginTop: '0.35rem' }}><strong>Status Bukti:</strong> {doc.status}</p>
-            </div>
-            <div className="sub-card">
-              <p><strong>Peruntukan Portofolio:</strong> {doc.usage}</p>
-              <p style={{ marginTop: '0.35rem' }}><strong>Catatan Akademik:</strong> {doc.notes}</p>
-            </div>
-          </div>
-
           <div className="sub-card" style={{ marginBottom: '1rem' }}>
-            <h4>Ringkasan Eksekutif Dokumen</h4>
-            <p>{doc.content}</p>
+            <p style={{ marginBottom: '0.6rem' }}>{doc.content}</p>
             {doc.highlights && doc.highlights.length > 0 && (
-              <div style={{ marginTop: '0.85rem' }}>
-                <strong>Butir-Butir Isi Terverifikasi dari Dokumen Asli:</strong>
-                <ul className="styled-list" style={{ marginTop: '0.4rem' }}>
-                  {doc.highlights.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              <ul className="styled-list">
+                {doc.highlights.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
             )}
           </div>
 
@@ -57,13 +42,13 @@ export default function PdfModal({ doc, onClose }) {
                 title={doc.name}
                 width="100%"
                 height="440px"
-                style={{ border: '1px solid #cbd5e1', borderRadius: '10px', marginTop: '0.5rem' }}
+                style={{ border: '1px solid #cbd5e1', borderRadius: '10px' }}
               />
             </div>
           )}
 
           {isYoutube && (
-            <div className="video-container" style={{ marginTop: '0.75rem' }}>
+            <div className="video-container">
               <iframe
                 src="https://www.youtube.com/embed/CBBoBcWRp1o"
                 title={doc.name}
@@ -80,10 +65,10 @@ export default function PdfModal({ doc, onClose }) {
               rel="noopener noreferrer"
               className="btn btn-primary"
             >
-              Buka Dokumen / Sumber di Tab Baru ↗
+              Buka Dokumen Asli ↗
             </a>
             <button className="btn btn-outline" onClick={onClose}>
-              Kembali ke Halaman
+              Tutup
             </button>
           </div>
         </div>
